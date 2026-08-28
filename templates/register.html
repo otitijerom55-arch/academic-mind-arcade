@@ -1,66 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Academic Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg w-full max-w-md border border-slate-200 dark:border-slate-700">
-        <h2 class="text-2xl font-bold text-center mb-6">Create Student Account</h2>
+{% extends "layout.html" %}
+{% block title %}Account Registration | {{ meta.brand_name }}{% endblock %}
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div class="bg-amber-100 text-amber-700 p-3 rounded mb-4 text-sm">{{ message }}</div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+{% block content %}
+<main class="max-w-md mx-auto px-6 py-16">
+    <div class="cyber-card rounded-3xl p-8 border border-slate-800 shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-black text-white tracking-wider font-cyber">CREATE ACCOUNT</h1>
+            <p class="text-xs font-bold text-cyan-400 uppercase tracking-widest mt-1">Unlock Multi-Level Curriculum</p>
+        </div>
 
-        <form action="/register" method="POST" class="space-y-4">
+        <form action="/register" method="POST" class="space-y-5">
             <div>
-                <label class="block text-xs font-semibold uppercase mb-1">Full Name / Student Name</label>
-                <input type="text" name="username" required class="w-full px-3 py-2 border dark:border-slate-600 rounded-lg dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold uppercase mb-1">Academic Class</label>
-                <select name="student_class" class="w-full px-3 py-2 border dark:border-slate-600 rounded-lg dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500">
-                    {% for c in classes %}
-                        <option value="{{ c }}">{{ c }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div>
-                <label class="block text-xs font-semibold uppercase mb-1">Email Address</label>
-                <input type="email" name="email" required class="w-full px-3 py-2 border dark:border-slate-600 rounded-lg dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold uppercase mb-1">Password</label>
-                <input type="password" name="password" required class="w-full px-3 py-2 border dark:border-slate-600 rounded-lg dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500">
-            </div>
-            
-            <hr class="border-slate-200 dark:border-slate-700 my-2">
-            
-            <div>
-                <label class="block text-xs font-semibold uppercase mb-1">Password Recovery Security Question</label>
-                <select name="security_question" class="w-full px-3 py-2 border dark:border-slate-600 rounded-lg dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 text-sm">
-                    <option value="What is the name of your primary school?">What is the name of your primary school?</option>
-                    <option value="What is your favorite subject?">What is your favorite subject?</option>
-                    <option value="What town were you born in?">What town were you born in?</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-xs font-semibold uppercase mb-1">Security Answer</label>
-                <input type="text" name="security_answer" required placeholder="Your secret answer" class="w-full px-3 py-2 border dark:border-slate-600 rounded-lg dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Student Email Address</label>
+                <input type="email" name="email" required placeholder="student@academicmindarcade.com" class="w-full cyber-input text-white rounded-xl px-4 py-3 text-sm">
             </div>
 
-            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition">Register Account</button>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Create Password</label>
+                <input type="password" name="password" required placeholder="••••••••••••••••" class="w-full cyber-input text-white rounded-xl px-4 py-3 text-sm">
+            </div>
+
+            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-cyan-400 to-teal-300 text-slate-950 font-black tracking-wider uppercase rounded-xl hover:opacity-90 transition font-cyber shadow-lg shadow-cyan-500/20">
+                Complete Registration ➔
+            </button>
         </form>
 
-        <p class="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
-            Already registered? <a href="/login" class="text-indigo-600 font-semibold hover:underline">Log in here</a>
-        </p>
+        <div class="mt-8 pt-6 border-t border-slate-800 text-center text-xs text-slate-400">
+            Already registered? <a href="/login" class="text-cyan-400 hover:underline">Sign In</a>
+        </div>
     </div>
-</body>
-</html>
+</main>
+{% endblock %}

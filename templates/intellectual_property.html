@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Intellectual Property Notice | {{ meta.brand_name }}{% endblock %}
+
+{% block content %}
+<main class="max-w-4xl mx-auto px-6 py-12">
+    <div class="cyber-card rounded-3xl p-8 md:p-12 border border-slate-800">
+        <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 font-cyber">Legal Compliance</span>
+        <h1 class="text-3xl font-black text-white mt-2 mb-6 font-cyber">Intellectual Property Framework</h1>
+        
+        <div class="space-y-6 text-xs text-slate-300 leading-relaxed font-mono">
+            <p>
+                <strong>Sole Ownership Declaration:</strong> All technology, trade secrets, curriculum integrations, and digital branding associated with <strong>{{ meta.brand_name }}</strong> are the exclusive property of <strong>{{ meta.owner_name }}</strong> ({{ meta.owner_email }}).
+            </p>
+            <p>
+                <strong>Protected Curriculum & Media:</strong> All video stream links, document assets, and user interface designs are protected under international copyright laws (2026). Unauthorized distribution or reproduction of system assets is prohibited.
+            </p>
+            <p>
+                <strong>System Integrity:</strong> Administrative functions are restricted to authorized credentials monitored by <strong>{{ meta.owner_name }}</strong>.
+            </p>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block title %}Curriculum Arcade | {{ meta.brand_name }}{% endblock %}
+
+{% block content %}
+<main class="max-w-7xl mx-auto px-6 py-10">
+    <!-- Grade Tier Navigation Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/80 px-3.5 py-1.5 rounded-full border border-cyan-800 font-cyber">
+                Multi-Level Digital Curriculum
+            </span>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mt-3 font-cyber">Learning Arcade & Streams</h1>
+        </div>
+
+        <!-- Futuristic Level Tabs -->
+        <div class="flex flex-wrap gap-2 p-1.5 rounded-2xl cyber-glass border border-slate-800">
+            <a href="/study-resources?level=all" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition {% if current_level == 'all' %}bg-indigo-600 text-white shadow-lg shadow-indigo-600/30{% else %}text-slate-400 hover:text-white{% endif %}">
+                All Levels
+            </a>
+            <a href="/study-resources?level=primary" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition {% if current_level == 'primary' %}bg-indigo-600 text-white shadow-lg shadow-indigo-600/30{% else %}text-slate-400 hover:text-white{% endif %}">
+                Primary (PLE)
+            </a>
+            <a href="/study-resources?level=o-level" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition {% if current_level == 'o-level' %}bg-indigo-600 text-white shadow-lg shadow-indigo-600/30{% else %}text-slate-400 hover:text-white{% endif %}">
+                O-Level
+            </a>
+            <a href="/study-resources?level=a-level" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition {% if current_level == 'a-level' %}bg-indigo-600 text-white shadow-lg shadow-indigo-600/30{% else %}text-slate-400 hover:text-white{% endif %}">
+                A-Level
+            </a>
+        </div>
+    </div>
+
+    <!-- Module Resource Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for item in resources %}
+        <div class="cyber-card rounded-3xl p-6 flex flex-col justify-between border border-slate-800 hover:border-indigo-500/50 transition duration-300">
+            <div>
+                <!-- Video Segment Stream Player -->
+                <div class="relative w-full aspect-video rounded-2xl overflow-hidden mb-5 border border-slate-800 bg-black">
+                    <iframe class="w-full h-full" src="{{ item.video_url }}" title="{{ item.title }}" allowfullscreen></iframe>
+                </div>
+
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded-md border border-cyan-800">
+                        {{ item.level }}
+                    </span>
+                    <span class="text-[10px] text-slate-500 font-mono">ID: #00{{ item.id }}</span>
+                </div>
+
+                <h3 class="text-xl font-bold text-white mb-2 font-cyber">{{ item.title }}</h3>
+                <p class="text-xs text-slate-400 leading-relaxed mb-6">{{ item.description }}</p>
+            </div>
+
+            <!-- Attached File Document Asset -->
+            <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                <div class="flex items-center space-x-2 text-xs text-slate-300 font-mono truncate max-w-[180px]">
+                    <span>📄</span>
+                    <span class="truncate">{{ item.doc_name }}</span>
+                </div>
+                <a href="#" onclick="alert('Initiating secure document link download...'); return false;" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 uppercase tracking-wider font-cyber">
+                    Download ➔
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-span-full py-16 text-center cyber-card rounded-3xl border border-slate-800">
+            <p class="text-slate-400 text-sm font-mono">No active educational modules found for this specific filter tier.</p>
+        </div>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}
