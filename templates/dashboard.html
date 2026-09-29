@@ -1,48 +1,357 @@
 {% extends "layout.html" %}
-{% block title %}Dashboard | {{ meta.brand_name }}{% endblock %}
+{% block title %}Math & Physics Dashboard | {{ meta.brand_name }}{% endblock %}
 
 {% block content %}
-<main class="max-w-7xl mx-auto px-6 py-12">
-    <!-- Hero Section -->
-    <div class="cyber-glass rounded-3xl p-8 md:p-14 border border-slate-800 relative overflow-hidden mb-12">
-        <div class="max-w-3xl relative z-10">
-            <span class="text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/80 px-3.5 py-1.5 rounded-full border border-cyan-800 font-cyber">
-                Next-Gen Education Infrastructure
-            </span>
-            <h1 class="text-4xl md:text-6xl font-black text-white mt-4 font-cyber leading-tight">
-                Academic Mind Arcade™
-            </h1>
-            <p class="text-sm md:text-base text-slate-300 mt-4 leading-relaxed">
-                Accelerated interactive learning engines structured across Primary (PLE), O-Level, and A-Level curriculums. Engine ownership and operational oversight directed by {{ meta.owner_name }}.
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-12">
+
+    <!-- Hero Section with Math/Physics Graphics and Live Quick Sim -->
+    <div class="cyber-glass rounded-3xl p-6 sm:p-10 lg:p-14 border border-slate-800 relative overflow-hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+            
+            <div class="lg:col-span-7 space-y-5">
+                <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-cyan-950/80 to-indigo-950/80 border border-cyan-800/80 px-3.5 py-1.5 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-cyan-300 font-cyber">
+                        Interactive Math & Physics Education Engine
+                    </span>
+                </div>
+
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white font-cyber leading-tight">
+                    Master the Universe Through <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">Numbers & Motion</span>
+                </h1>
+
+                <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl">
+                    Welcome to <strong>Academic Mind Arcade™</strong> — where mathematics and physics turn into interactive discovery. Explore real-time physics simulations, calculus function visualizers, formula cheat sheets, and diagnostic problem sets across <strong>Primary (PLE)</strong>, <strong>O-Level</strong>, and <strong>A-Level</strong> curricula.
+                </p>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-3 gap-3 pt-2 max-w-lg">
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 text-center">
+                        <div class="text-xl sm:text-2xl font-black text-cyan-400 font-cyber">4+</div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Virtual Labs</div>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 text-center">
+                        <div class="text-xl sm:text-2xl font-black text-indigo-400 font-cyber">30+</div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">STEM Formulas</div>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 text-center">
+                        <div class="text-xl sm:text-2xl font-black text-emerald-400 font-cyber">{{ total_resources }}</div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Core Modules</div>
+                    </div>
+                </div>
+
+                <!-- Action CTAs -->
+                <div class="pt-2 flex flex-wrap gap-4">
+                    <a href="/simulations" class="px-6 py-3.5 bg-gradient-to-r from-indigo-500 via-cyan-500 to-teal-400 text-slate-950 font-black uppercase tracking-wider text-xs rounded-xl hover:opacity-90 transition font-cyber shadow-lg shadow-cyan-500/25 flex items-center space-x-2">
+                        <span>⚛ Launch Virtual Labs</span>
+                        <span>➔</span>
+                    </a>
+                    <a href="/calculators" class="px-5 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold uppercase tracking-wider text-xs rounded-xl border border-slate-700 transition flex items-center space-x-2">
+                        <span>⚡ STEM Calculators</span>
+                    </a>
+                    <a href="/quiz" class="px-5 py-3.5 bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold uppercase tracking-wider text-xs rounded-xl border border-amber-900/50 transition flex items-center space-x-2">
+                        <span>🎯 Diagnostic Quiz</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mini Interactive Hero Canvas (Orbital & Wave Demo) -->
+            <div class="lg:col-span-5">
+                <div class="cyber-card rounded-2xl p-5 border border-slate-800 relative shadow-2xl">
+                    <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                            <span class="text-xs font-mono text-slate-400 ml-2">Harmonic Oscillations & Orbit</span>
+                        </div>
+                        <span class="text-[10px] text-cyan-400 font-mono bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800">LIVE RENDER</span>
+                    </div>
+
+                    <canvas id="heroCanvas" class="w-full h-56 rounded-xl bg-slate-950/90 border border-slate-900 block"></canvas>
+
+                    <div class="mt-4 grid grid-cols-2 gap-2 text-[11px] font-mono text-slate-400">
+                        <div class="bg-slate-900/60 p-2 rounded-lg border border-slate-800/80">
+                            <span class="text-slate-500 block">Equation:</span>
+                            <span class="text-cyan-300">y(t) = A·sin(ωt + φ)</span>
+                        </div>
+                        <div class="bg-slate-900/60 p-2 rounded-lg border border-slate-800/80">
+                            <span class="text-slate-500 block">Kinetic Energy:</span>
+                            <span class="text-indigo-300">E_k = ½mv²</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Feature Pillars -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- 1. Simulations -->
+        <a href="/simulations" class="cyber-card p-6 rounded-2xl border border-slate-800 group hover:border-cyan-500/60 transition block">
+            <div class="w-12 h-12 rounded-xl bg-cyan-950/70 border border-cyan-800/80 flex items-center justify-center text-2xl text-cyan-400 mb-4 group-hover:scale-110 transition">
+                ⚛
+            </div>
+            <div class="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono mb-1">Interactive Labs</div>
+            <h3 class="text-lg font-bold text-white font-cyber mb-2">Physics & Math Simulations</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                Tweak gravity, angles, and friction. Experiment with projectile ballistics, harmonic pendulums, Snell's law refraction, and real-time calculus slope tangents.
             </p>
-            <div class="mt-8 flex flex-wrap gap-4">
-                <a href="/study-resources" class="px-6 py-3.5 bg-gradient-to-r from-indigo-500 via-cyan-500 to-teal-400 text-slate-950 font-black uppercase tracking-wider text-xs rounded-xl hover:opacity-90 transition font-cyber shadow-lg shadow-cyan-500/20">
-                    Launch Resource Arcade ➔
+            <span class="text-xs font-bold text-cyan-400 flex items-center gap-1 group-hover:translate-x-1 transition">
+                Enter Virtual Lab ➔
+            </span>
+        </a>
+
+        <!-- 2. Solvers & Calculators -->
+        <a href="/calculators" class="cyber-card p-6 rounded-2xl border border-slate-800 group hover:border-indigo-500/60 transition block">
+            <div class="w-12 h-12 rounded-xl bg-indigo-950/70 border border-indigo-800/80 flex items-center justify-center text-2xl text-indigo-400 mb-4 group-hover:scale-110 transition">
+                ⚡
+            </div>
+            <div class="text-xs font-bold uppercase tracking-wider text-indigo-400 font-mono mb-1">Computational Tools</div>
+            <h3 class="text-lg font-bold text-white font-cyber mb-2">Kinematics & Equation Solvers</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                Calculate velocity, acceleration, quadratic roots with discriminant proofs, kinetic work-energy values, and Ohm's law electrical resistance.
+            </p>
+            <span class="text-xs font-bold text-indigo-400 flex items-center gap-1 group-hover:translate-x-1 transition">
+                Open Calculators ➔
+            </span>
+        </a>
+
+        <!-- 3. Formulas Codex -->
+        <a href="/formulas" class="cyber-card p-6 rounded-2xl border border-slate-800 group hover:border-emerald-500/60 transition block">
+            <div class="w-12 h-12 rounded-xl bg-emerald-950/70 border border-emerald-800/80 flex items-center justify-center text-2xl text-emerald-400 mb-4 group-hover:scale-110 transition">
+                ∫
+            </div>
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-400 font-mono mb-1">Curated KaTeX Codex</div>
+            <h3 class="text-lg font-bold text-white font-cyber mb-2">Formulas & Theorem Reference</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                Explore beautifully formatted LaTeX equations across Classical Mechanics, Calculus, Electromagnetism, Waves, Trigonometry, and Thermodynamics.
+            </p>
+            <span class="text-xs font-bold text-emerald-400 flex items-center gap-1 group-hover:translate-x-1 transition">
+                Browse Cheat Sheets ➔
+            </span>
+        </a>
+
+        <!-- 4. Interactive Quizzes -->
+        <a href="/quiz" class="cyber-card p-6 rounded-2xl border border-slate-800 group hover:border-amber-500/60 transition block">
+            <div class="w-12 h-12 rounded-xl bg-amber-950/70 border border-amber-800/80 flex items-center justify-center text-2xl text-amber-400 mb-4 group-hover:scale-110 transition">
+                🎯
+            </div>
+            <div class="text-xs font-bold uppercase tracking-wider text-amber-400 font-mono mb-1">Diagnostic Checks</div>
+            <h3 class="text-lg font-bold text-white font-cyber mb-2">Self-Paced Practice Quizzes</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                Test your mastery in projectile kinematics, integral derivatives, electrical potential, and algebra with instant auto-grading and mathematical explanations.
+            </p>
+            <span class="text-xs font-bold text-amber-400 flex items-center gap-1 group-hover:translate-x-1 transition">
+                Start Practice ➔
+            </span>
+        </a>
+    </div>
+
+    <!-- Curriculum Levels Explorer -->
+    <div class="cyber-glass rounded-3xl p-8 border border-slate-800">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 font-cyber">Structured Progression</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1 font-cyber">Choose Your Academic Curriculum Tier</h2>
+            </div>
+            <a href="/study-resources" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 font-cyber flex items-center gap-1">
+                View All Curriculum Streams ➔
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Tier 1: Primary -->
+            <div class="cyber-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-950/70 px-2.5 py-1 rounded-lg border border-amber-800/80">Tier 01</span>
+                        <span class="text-xs font-mono text-slate-500">Ages 9-13</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white font-cyber mb-2">Primary (PLE) Foundations</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                        Core arithmetic, fractional logic, ratios, geometric perimeters, simple machines, gravity basics, and initial scientific method.
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-1.5 font-mono mb-6">
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Arithmetic & Prime Factors</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Levers, Pulleys & Friction</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Angles & 2D Shapes</li>
+                    </ul>
+                </div>
+                <a href="/study-resources?level=primary" class="w-full py-2.5 text-center bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold uppercase tracking-wider text-cyan-400 rounded-xl transition">
+                    Explore Primary Modules ➔
                 </a>
-                <a href="/about" class="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold uppercase tracking-wider text-xs rounded-xl border border-slate-700 transition">
-                    System Architecture
+            </div>
+
+            <!-- Tier 2: O-Level -->
+            <div class="cyber-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl pointer-events-none"></div>
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 bg-cyan-950/70 px-2.5 py-1 rounded-lg border border-cyan-800/80">Tier 02</span>
+                        <span class="text-xs font-mono text-slate-500">Secondary</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white font-cyber mb-2">Lower Secondary (O-Level)</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                        Classical Newtonian mechanics, quadratic equations, coordinate geometry, Snell's law optics, work-energy, and electric circuits.
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-1.5 font-mono mb-6">
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Kinematics: $v = u + at$</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Quadratic Formula & Graphs</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Circuit Laws: $V = IR$</li>
+                    </ul>
+                </div>
+                <a href="/study-resources?level=o-level" class="w-full py-2.5 text-center bg-indigo-950/60 hover:bg-indigo-900/60 border border-indigo-700/60 text-xs font-bold uppercase tracking-wider text-cyan-300 rounded-xl transition">
+                    Explore O-Level Modules ➔
+                </a>
+            </div>
+
+            <!-- Tier 3: A-Level -->
+            <div class="cyber-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl pointer-events-none"></div>
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/70 px-2.5 py-1 rounded-lg border border-indigo-800/80">Tier 03</span>
+                        <span class="text-xs font-mono text-slate-500">Advanced Secondary</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white font-cyber mb-2">Upper Secondary (A-Level)</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                        Pure vector calculus, electromagnetic induction, wave mechanics, differential equations, and 3D Euclidean spatial transformations.
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-1.5 font-mono mb-6">
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> $\frac{d}{dx}$ Derivatives & $\int$ Integrals</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Faraday & Maxwell Induction</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> 3D Vectors & Cross Products</li>
+                    </ul>
+                </div>
+                <a href="/study-resources?level=a-level" class="w-full py-2.5 text-center bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold uppercase tracking-wider text-indigo-300 rounded-xl transition">
+                    Explore A-Level Modules ➔
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Tier Quick Links -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="cyber-card p-6 rounded-2xl border border-slate-800">
-            <div class="text-indigo-400 font-cyber font-bold text-lg mb-2">01. Primary (PLE)</div>
-            <p class="text-xs text-slate-400 mb-4">Logic building blocks, basic mathematical logic, and primary natural sciences.</p>
-            <a href="/study-resources?level=primary" class="text-xs font-bold text-cyan-400 hover:underline">Explore Modules ➔</a>
+    <!-- Featured Modules Preview -->
+    <div class="space-y-6">
+        <div class="flex justify-between items-center">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-cyan-400 font-cyber">Curriculum Highlights</span>
+                <h2 class="text-2xl font-extrabold text-white font-cyber">Featured Math & Physics Modules</h2>
+            </div>
+            <a href="/study-resources" class="text-xs font-bold text-slate-400 hover:text-white uppercase tracking-wider font-mono">View All ({{ total_resources }}) ➔</a>
         </div>
-        <div class="cyber-card p-6 rounded-2xl border border-slate-800">
-            <div class="text-indigo-400 font-cyber font-bold text-lg mb-2">02. Lower Secondary (O-Level)</div>
-            <p class="text-xs text-slate-400 mb-4">Practical mechanics, foundation chemistry, and structured algebra.</p>
-            <a href="/study-resources?level=o-level" class="text-xs font-bold text-cyan-400 hover:underline">Explore Modules ➔</a>
-        </div>
-        <div class="cyber-card p-6 rounded-2xl border border-slate-800">
-            <div class="text-indigo-400 font-cyber font-bold text-lg mb-2">03. Upper Secondary (A-Level)</div>
-            <p class="text-xs text-slate-400 mb-4">Vector calculus, computational mechanics, and high-level analytical proofs.</p>
-            <a href="/study-resources?level=a-level" class="text-xs font-bold text-cyan-400 hover:underline">Explore Modules ➔</a>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for item in featured_resources %}
+            <div class="cyber-card rounded-2xl p-6 border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider {% if item.subject == 'Mathematics' %}text-cyan-400 bg-cyan-950/80 border-cyan-800{% else %}text-indigo-400 bg-indigo-950/80 border-indigo-800{% endif %} px-2.5 py-1 rounded-md border font-mono">
+                                {{ item.subject }}
+                            </span>
+                            <span class="text-[10px] text-slate-400 bg-slate-900 px-2 py-1 rounded-md border border-slate-800 font-mono">
+                                {{ item.level }}
+                            </span>
+                        </div>
+                        <span class="text-[10px] text-slate-500 font-mono">{{ item.category_badge }}</span>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-white font-cyber mb-2">{{ item.title }}</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">{{ item.description }}</p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs">
+                    <span class="font-mono text-slate-400 truncate max-w-[200px]">📄 {{ item.doc_name }}</span>
+                    <a href="/study-resources" class="text-cyan-400 hover:text-cyan-300 font-bold font-cyber">Open Module ➔</a>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
+
 </main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Animated Hero Canvas demonstrating harmonic motion + projectile trajectory
+    (function() {
+        const canvas = document.getElementById('heroCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = canvas.parentElement.clientWidth;
+        let height = canvas.height = canvas.parentElement.clientHeight || 220;
+        let t = 0;
+
+        window.addEventListener('resize', () => {
+            if (!canvas.parentElement) return;
+            width = canvas.width = canvas.parentElement.clientWidth;
+            height = canvas.height = 220;
+        });
+
+        function draw() {
+            ctx.fillStyle = 'rgba(10, 15, 30, 0.25)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw coordinate grid
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 1;
+            const step = 30;
+            for (let x = 0; x < width; x += step) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < height; y += step) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+
+            // Draw Sinusoidal Wave (Physics Wave Model)
+            ctx.beginPath();
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = '#06b6d4';
+            for (let x = 0; x < width; x += 2) {
+                const y = height / 2 + Math.sin(x * 0.02 + t) * 45 * Math.sin(t * 0.5);
+                if (x === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Draw Parabolic Projectile Curve
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#818cf8';
+            ctx.setLineDash([5, 5]);
+            for (let x = 0; x < width; x += 4) {
+                const normX = (x / width) * 2 - 1;
+                const y = height - 20 - (1 - normX * normX) * (height * 0.65);
+                if (x === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Moving particle on the wave
+            const particleX = (t * 60) % width;
+            const particleY = height / 2 + Math.sin(particleX * 0.02 + t) * 45 * Math.sin(t * 0.5);
+            ctx.fillStyle = '#22d3ee';
+            ctx.shadowColor = '#06b6d4';
+            ctx.shadowBlur = 15;
+            ctx.beginPath();
+            ctx.arc(particleX, particleY, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            t += 0.035;
+            requestAnimationFrame(draw);
+        }
+        draw();
+    })();
+</script>
 {% endblock %}

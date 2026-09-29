@@ -1,71 +1,102 @@
 {% extends "layout.html" %}
-{% block title %}Curriculum Arcade | {{ meta.brand_name }}{% endblock %}
+{% block title %}Curriculum Resources & Streams | {{ meta.brand_name }}{% endblock %}
 
 {% block content %}
-<main class="max-w-7xl mx-auto px-6 py-10">
-    <!-- Grade Tier Navigation Header -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-800 pb-6">
         <div>
-            <span class="text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/80 px-3.5 py-1.5 rounded-full border border-cyan-800 font-cyber">
-                Multi-Level Digital Curriculum
-            </span>
-            <h1 class="text-3xl md:text-5xl font-extrabold text-white mt-3 font-cyber">Learning Arcade & Streams</h1>
+            <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-pink-400"></span>
+                <span class="text-xs font-bold uppercase tracking-widest text-pink-400 font-cyber">
+                    Curated STEM Syllabus
+                </span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white mt-2 font-cyber">Math & Physics Educational Streams</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+                Structured video modules, downloadable PDF lecture handouts, and analytical problem sheets aligned with Primary (PLE), Secondary (O-Level), and Upper Secondary (A-Level) curricula.
+            </p>
         </div>
 
-        <!-- Futuristic Level Tabs -->
-        <div class="flex flex-wrap gap-2 p-1.5 rounded-2xl cyber-glass border border-slate-800">
-            <a href="/study-resources?level=all" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition {% if current_level == 'all' %}bg-indigo-600 text-white shadow-lg shadow-indigo-600/30{% else %}text-slate-400 hover:text-white{% endif %}">
-                All Levels
+        <!-- Subject Filter Buttons -->
+        <div class="flex gap-2 p-1.5 cyber-glass rounded-2xl border border-slate-800 text-xs font-mono">
+            <a href="/study-resources?level={{ current_level }}&subject=all" class="px-3.5 py-2 rounded-xl transition {% if current_subject == 'all' %}bg-pink-500 text-slate-950 font-bold{% else %}text-slate-400 hover:text-white{% endif %}">
+                All Subjects
             </a>
-            <a href="/study-resources?level=primary" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition {% if current_level == 'primary' %}bg-indigo-600 text-white shadow-lg shadow-indigo-600/30{% else %}text-slate-400 hover:text-white{% endif %}">
-                Primary (PLE)
+            <a href="/study-resources?level={{ current_level }}&subject=physics" class="px-3.5 py-2 rounded-xl transition {% if current_subject == 'physics' %}bg-indigo-600 text-white font-bold{% else %}text-slate-400 hover:text-white{% endif %}">
+                ⚛ Physics
             </a>
-            <a href="/study-resources?level=o-level" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition {% if current_level == 'o-level' %}bg-indigo-600 text-white shadow-lg shadow-indigo-600/30{% else %}text-slate-400 hover:text-white{% endif %}">
-                O-Level
-            </a>
-            <a href="/study-resources?level=a-level" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition {% if current_level == 'a-level' %}bg-indigo-600 text-white shadow-lg shadow-indigo-600/30{% else %}text-slate-400 hover:text-white{% endif %}">
-                A-Level
+            <a href="/study-resources?level={{ current_level }}&subject=mathematics" class="px-3.5 py-2 rounded-xl transition {% if current_subject == 'mathematics' %}bg-cyan-500 text-slate-950 font-bold{% else %}text-slate-400 hover:text-white{% endif %}">
+                ∑ Mathematics
             </a>
         </div>
+    </div>
+
+    <!-- Tier Filter Tabs -->
+    <div class="flex flex-wrap gap-2 text-xs font-mono">
+        <a href="/study-resources?level=all&subject={{ current_subject }}" class="px-4 py-2 rounded-xl uppercase tracking-wider transition border {% if current_level == 'all' %}bg-slate-800 border-slate-600 text-white font-bold{% else %}border-slate-800/80 text-slate-400 hover:text-white bg-slate-950{% endif %}">
+            All Levels
+        </a>
+        <a href="/study-resources?level=primary&subject={{ current_subject }}" class="px-4 py-2 rounded-xl uppercase tracking-wider transition border {% if current_level == 'primary' %}bg-amber-950 border-amber-700 text-amber-300 font-bold{% else %}border-slate-800/80 text-slate-400 hover:text-white bg-slate-950{% endif %}">
+            Primary (PLE) Foundations
+        </a>
+        <a href="/study-resources?level=o-level&subject={{ current_subject }}" class="px-4 py-2 rounded-xl uppercase tracking-wider transition border {% if current_level == 'o-level' %}bg-cyan-950 border-cyan-700 text-cyan-300 font-bold{% else %}border-slate-800/80 text-slate-400 hover:text-white bg-slate-950{% endif %}">
+            O-Level (Secondary)
+        </a>
+        <a href="/study-resources?level=a-level&subject={{ current_subject }}" class="px-4 py-2 rounded-xl uppercase tracking-wider transition border {% if current_level == 'a-level' %}bg-indigo-950 border-indigo-700 text-indigo-300 font-bold{% else %}border-slate-800/80 text-slate-400 hover:text-white bg-slate-950{% endif %}">
+            A-Level (Upper Secondary)
+        </a>
     </div>
 
     <!-- Module Resource Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for item in resources %}
-        <div class="cyber-card rounded-3xl p-6 flex flex-col justify-between border border-slate-800 hover:border-indigo-500/50 transition duration-300">
+        <div class="cyber-card rounded-3xl p-6 flex flex-col justify-between border border-slate-800 hover:border-cyan-500/40 transition duration-300 group">
             <div>
                 <!-- Video Segment Stream Player -->
                 <div class="relative w-full aspect-video rounded-2xl overflow-hidden mb-5 border border-slate-800 bg-black">
-                    <iframe class="w-full h-full" src="{{ item.video_url }}" title="{{ item.title }}" allowfullscreen></iframe>
+                    <iframe class="w-full h-full" src="{{ item.video_url }}" title="{{ item.title }}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
 
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded-md border border-cyan-800">
-                        {{ item.level }}
-                    </span>
-                    <span class="text-[10px] text-slate-500 font-mono">ID: #00{{ item.id }}</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider {% if item.subject == 'Mathematics' %}text-cyan-400 bg-cyan-950/80 border-cyan-800{% else %}text-indigo-400 bg-indigo-950/80 border-indigo-800{% endif %} px-2.5 py-1 rounded-md border font-mono">
+                            {{ item.subject }}
+                        </span>
+                        <span class="text-[10px] text-slate-400 bg-slate-900 px-2 py-1 rounded-md border border-slate-800 font-mono">
+                            {{ item.level }}
+                        </span>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono">#00{{ item.id }}</span>
                 </div>
 
-                <h3 class="text-xl font-bold text-white mb-2 font-cyber">{{ item.title }}</h3>
+                <div class="text-[11px] font-mono text-cyan-400 mb-1">{{ item.category_badge }}</div>
+                <h3 class="text-lg font-bold text-white mb-2 font-cyber group-hover:text-cyan-300 transition">{{ item.title }}</h3>
                 <p class="text-xs text-slate-400 leading-relaxed mb-6">{{ item.description }}</p>
             </div>
 
             <!-- Attached File Document Asset -->
             <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                <div class="flex items-center space-x-2 text-xs text-slate-300 font-mono truncate max-w-[180px]">
-                    <span>📄</span>
+                <div class="flex items-center space-x-2 text-xs text-slate-300 font-mono truncate max-w-[190px]">
+                    <span class="text-rose-400">📄</span>
                     <span class="truncate">{{ item.doc_name }}</span>
                 </div>
-                <a href="#" onclick="alert('Initiating secure document link download...'); return false;" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 uppercase tracking-wider font-cyber">
-                    Download ➔
+                <a href="#" onclick="alert('Downloading syllabus lecture module: {{ item.doc_name }}'); return false;" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 uppercase tracking-wider font-cyber">
+                    Download Notes ➔
                 </a>
             </div>
         </div>
         {% else %}
-        <div class="col-span-full py-16 text-center cyber-card rounded-3xl border border-slate-800">
-            <p class="text-slate-400 text-sm font-mono">No active educational modules found for this specific filter tier.</p>
+        <div class="col-span-full py-20 text-center cyber-card rounded-3xl border border-slate-800 space-y-3">
+            <div class="text-3xl text-slate-600">🔭</div>
+            <p class="text-slate-400 text-sm font-mono">No active educational modules found matching this specific filter criteria.</p>
+            <a href="/study-resources" class="inline-block mt-2 px-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-cyan-400 font-bold uppercase font-cyber hover:bg-slate-800">
+                Reset All Filters
+            </a>
         </div>
         {% endfor %}
     </div>
+
 </main>
 {% endblock %}

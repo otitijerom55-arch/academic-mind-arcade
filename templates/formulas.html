@@ -1,0 +1,289 @@
+{% extends "layout.html" %}
+{% block title %}Formula Codex & STEM Theorems | {{ meta.brand_name }}{% endblock %}
+
+{% block content %}
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+
+    <!-- Header & Search -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-800 pb-6">
+        <div>
+            <div class="flex items-center space-x-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-emerald-400 font-cyber">Academic Codex & KaTeX</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white mt-2 font-cyber">Mathematics & Physics Formula Codex</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+                Rigorous mathematical formulations and physical laws rendered in KaTeX. Designed for quick exam review, derivation analysis, and dimensional understanding.
+            </p>
+        </div>
+
+        <!-- Search / Filter Input -->
+        <div class="w-full md:w-72">
+            <input type="text" id="formula-search" placeholder="Search equations (e.g. Newton, Kepler, Integral)..." class="w-full cyber-input text-white rounded-xl px-4 py-2.5 text-xs">
+        </div>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="flex flex-wrap gap-2 text-xs font-mono">
+        <button onclick="filterFormulas('all')" class="cat-btn px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold">All Fields</button>
+        <button onclick="filterFormulas('mechanics')" class="cat-btn px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">Classical Mechanics</button>
+        <button onclick="filterFormulas('calculus')" class="cat-btn px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">Calculus & Analysis</button>
+        <button onclick="filterFormulas('electromagnetism')" class="cat-btn px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">Electromagnetism</button>
+        <button onclick="filterFormulas('waves')" class="cat-btn px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">Waves & Optics</button>
+        <button onclick="filterFormulas('thermodynamics')" class="cat-btn px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">Thermodynamics</button>
+        <button onclick="filterFormulas('algebra')" class="cat-btn px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">Algebra & Geometry</button>
+    </div>
+
+    <!-- Formula Cards Grid -->
+    <div id="formula-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- 1. SUVAT Equations -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="mechanics" data-keywords="suvat kinematics velocity acceleration motion displacement">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-cyan-400 font-bold uppercase font-mono">Mechanics</span>
+                <span class="text-slate-500 font-mono">O-Level / A-Level</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Kinematics Equations (SUVAT)</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-cyan-300">
+                $$v = u + at$$
+                $$s = ut + \frac{1}{2}at^2$$
+                $$v^2 = u^2 + 2as$$
+                $$s = \frac{(u + v)}{2}t$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Fundamental equations for linear motion with constant acceleration $a$, initial speed $u$, final speed $v$, time $t$, and displacement $s$.
+            </p>
+        </div>
+
+        <!-- 2. Newton's Second Law & Momentum -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="mechanics" data-keywords="newton force mass acceleration momentum impulse f=ma">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-cyan-400 font-bold uppercase font-mono">Mechanics</span>
+                <span class="text-slate-500 font-mono">All Levels</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Newton's Laws & Momentum</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-cyan-300">
+                $$\vec{F}_{\text{net}} = m\vec{a} = \frac{d\vec{p}}{dt}$$
+                $$\vec{p} = m\vec{v}$$
+                $$J = \Delta \vec{p} = \int \vec{F} \, dt$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Rate of change of linear momentum equals resultant external force. In closed systems, total momentum remains conserved: $\sum p_i = \sum p_f$.
+            </p>
+        </div>
+
+        <!-- 3. Gravitational Universal Law -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="mechanics" data-keywords="gravity gravitation kepler orbit field newton g">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-cyan-400 font-bold uppercase font-mono">Mechanics / Astro</span>
+                <span class="text-slate-500 font-mono">O/A-Level</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Universal Gravitation & Orbit</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-cyan-300">
+                $$F = G \frac{m_1 m_2}{r^2}$$
+                $$g = \frac{GM}{r^2}, \quad v_{\text{orbit}} = \sqrt{\frac{GM}{r}}$$
+                $$T^2 = \frac{4\pi^2}{GM}r^3$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Newton's inverse-square gravitational law and Kepler's 3rd Law of planetary orbital periods where $G \approx 6.674 \times 10^{-11} \, \text{N}\cdot\text{m}^2/\text{kg}^2$.
+            </p>
+        </div>
+
+        <!-- 4. Work, Energy & Conservation -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="mechanics" data-keywords="work kinetic potential energy power mechanical conservation">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-cyan-400 font-bold uppercase font-mono">Mechanics</span>
+                <span class="text-slate-500 font-mono">All Levels</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Work-Energy Theorem & Power</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-indigo-300">
+                $$W = \vec{F} \cdot \vec{d} = F d \cos\theta$$
+                $$E_k = \frac{1}{2}mv^2, \quad E_p = mgh$$
+                $$P = \frac{dW}{dt} = \vec{F} \cdot \vec{v}$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Work done on an object equals the net change in kinetic energy: $W_{\text{net}} = \Delta E_k$. Mechanical energy is conserved without non-conservative forces.
+            </p>
+        </div>
+
+        <!-- 5. Fundamental Calculus Derivatives -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="calculus" data-keywords="derivative calculus rate change chain product quotient power rule">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-emerald-400 font-bold uppercase font-mono">Calculus</span>
+                <span class="text-slate-500 font-mono">A-Level Pure</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Differential Calculus Rules</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-emerald-300">
+                $$\frac{d}{dx}[x^n] = n x^{n-1}$$
+                $$\frac{d}{dx}[uv] = u'v + uv'$$
+                $$\frac{d}{dx}\left[\frac{u}{v}\right] = \frac{u'v - uv'}{v^2}$$
+                $$\frac{d}{dx}[f(g(x))] = f'(g(x)) \cdot g'(x)$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Power, product, quotient, and chain rules for evaluating slopes, tangent lines, and instantaneous rates of change.
+            </p>
+        </div>
+
+        <!-- 6. Integral Calculus & FTC -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="calculus" data-keywords="integral calculus area fundamental theorem parts substitution ftc">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-emerald-400 font-bold uppercase font-mono">Calculus</span>
+                <span class="text-slate-500 font-mono">A-Level Pure</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Integral Calculus & Parts</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-emerald-300">
+                $$\int x^n \, dx = \frac{x^{n+1}}{n+1} + C \quad (n \neq -1)$$
+                $$\int \frac{1}{x} \, dx = \ln|x| + C$$
+                $$\int u \, dv = uv - \int v \, du$$
+                $$\int_a^b f(x)\,dx = F(b) - F(a)$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Antiderivatives, integration by parts, and the Fundamental Theorem of Calculus linking area under curves with antiderivatives.
+            </p>
+        </div>
+
+        <!-- 7. Electromagnetism & Coulomb's Law -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="electromagnetism" data-keywords="electricity coulomb electric field potential charge capacitance">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-amber-400 font-bold uppercase font-mono">Electromagnetism</span>
+                <span class="text-slate-500 font-mono">O/A-Level</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Electrostatics & Capacitance</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-amber-300">
+                $$F_e = \frac{1}{4\pi\varepsilon_0} \frac{q_1 q_2}{r^2}$$
+                $$E = \frac{F}{q} = \frac{V}{d}, \quad V = \frac{k q}{r}$$
+                $$Q = C V, \quad U = \frac{1}{2} C V^2$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Coulomb's Law, electric field intensity, electrostatic potential, and energy stored in dielectric parallel-plate capacitor plates.
+            </p>
+        </div>
+
+        <!-- 8. Circuit Laws & Ohm's Law -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="electromagnetism" data-keywords="circuits ohm kirchhoff resistance voltage current power">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-amber-400 font-bold uppercase font-mono">Electromagnetism</span>
+                <span class="text-slate-500 font-mono">All Levels</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Ohm's & Kirchhoff's Circuit Laws</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-amber-300">
+                $$V = I R, \quad P = I V = I^2 R = \frac{V^2}{R}$$
+                $$R_{\text{series}} = R_1 + R_2 + \dots$$
+                $$\frac{1}{R_{\text{parallel}}} = \frac{1}{R_1} + \frac{1}{R_2} + \dots$$
+                $$\sum I_{\text{in}} = \sum I_{\text{out}}, \quad \sum \Delta V = 0$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Ohm's relationship for resistive elements, Joule heating dissipation, and Kirchhoff's Current & Voltage conservation laws.
+            </p>
+        </div>
+
+        <!-- 9. Wave Optics & Snell's Law -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="waves" data-keywords="waves light snell optics refraction frequency wavelength slit">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-pink-400 font-bold uppercase font-mono">Waves & Optics</span>
+                <span class="text-slate-500 font-mono">All Levels</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Wave Velocity & Snell's Law</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-pink-300">
+                $$v = f \lambda, \quad T = \frac{1}{f}$$
+                $$n_1 \sin\theta_1 = n_2 \sin\theta_2$$
+                $$\sin\theta_c = \frac{n_2}{n_1} \quad (n_1 > n_2)$$
+                $$d \sin\theta = m \lambda \quad (\text{Diffraction})$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Wave propagation velocity, boundary refraction indices, total internal reflection condition, and Young's double-slit interference.
+            </p>
+        </div>
+
+        <!-- 10. Thermodynamics & Ideal Gas -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="thermodynamics" data-keywords="thermodynamics heat gas pressure temperature entropy ideal">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-rose-400 font-bold uppercase font-mono">Thermodynamics</span>
+                <span class="text-slate-500 font-mono">A-Level</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Ideal Gas & First Law</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-rose-300">
+                $$P V = n R T = N k_B T$$
+                $$\Delta U = Q - W$$
+                $$Q = m c \Delta T, \quad Q = m L$$
+                $$\bar{E}_k = \frac{3}{2} k_B T$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Macroscopic equation of state for dilute gases, internal energy changes, specific heat capacities, and microscopic kinetic temperature theory.
+            </p>
+        </div>
+
+        <!-- 11. Quadratic & Polynomial Foundations -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="algebra" data-keywords="quadratic roots algebra polynomial discriminant parabola">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-teal-400 font-bold uppercase font-mono">Algebra</span>
+                <span class="text-slate-500 font-mono">O-Level</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Quadratic Formula & Discriminant</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-teal-300">
+                $$a x^2 + b x + c = 0$$
+                $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+                $$\Delta = b^2 - 4ac$$
+                $$x_{\text{vertex}} = -\frac{b}{2a}$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Roots of second-degree equations: $\Delta > 0$ yields 2 real roots, $\Delta = 0$ gives 1 repeated root, and $\Delta < 0$ produces conjugate complex roots.
+            </p>
+        </div>
+
+        <!-- 12. Trigonometry & Vector Identity -->
+        <div class="formula-card cyber-card p-6 rounded-2xl border border-slate-800 space-y-4" data-cat="algebra" data-keywords="trig sine cosine tangent vector dot cross pythagoras">
+            <div class="flex justify-between items-center text-xs">
+                <span class="text-teal-400 font-bold uppercase font-mono">Trig & Vectors</span>
+                <span class="text-slate-500 font-mono">O/A-Level</span>
+            </div>
+            <h3 class="text-base font-bold text-white font-cyber">Trigonometric & Vector Laws</h3>
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-center font-mono text-sm overflow-x-auto text-teal-300">
+                $$\sin^2\theta + \cos^2\theta = 1$$
+                $$\vec{A} \cdot \vec{B} = |\vec{A}||\vec{B}|\cos\theta = A_x B_x + A_y B_y + A_z B_z$$
+                $$|\vec{A} \times \vec{B}| = |\vec{A}||\vec{B}|\sin\theta$$
+                $$c^2 = a^2 + b^2 - 2ab\cos(C)$$
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Fundamental Pythagorean trig identity, dot products (scalar projection, work), cross products (torque, magnetic force), and Law of Cosines.
+            </p>
+        </div>
+
+    </div>
+
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function filterFormulas(cat) {
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.classList.remove('bg-emerald-500', 'text-slate-950');
+            btn.classList.add('bg-slate-900', 'text-slate-300');
+        });
+        event.target.classList.remove('bg-slate-900', 'text-slate-300');
+        event.target.classList.add('bg-emerald-500', 'text-slate-950');
+
+        const cards = document.querySelectorAll('.formula-card');
+        cards.forEach(card => {
+            if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    document.getElementById('formula-search')?.addEventListener('input', e => {
+        const query = e.target.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.formula-card');
+        cards.forEach(card => {
+            const text = (card.textContent + ' ' + (card.getAttribute('data-keywords') || '')).toLowerCase();
+            if (text.includes(query)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}

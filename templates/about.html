@@ -1,28 +1,60 @@
 {% extends "layout.html" %}
-{% block title %}About | {{ meta.brand_name }}{% endblock %}
+{% block title %}About & Mission Briefing | {{ meta.brand_name }}{% endblock %}
 
 {% block content %}
-<main class="max-w-4xl mx-auto px-6 py-12">
-    <div class="cyber-card rounded-3xl p-8 md:p-12 border border-slate-800">
-        <span class="text-xs font-bold uppercase tracking-widest text-cyan-400 font-cyber">Mission Briefing</span>
-        <h1 class="text-3xl font-black text-white mt-2 mb-6 font-cyber">About Academic Mind Arcade™</h1>
+<main class="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-10">
+
+    <!-- Mission Header Card -->
+    <div class="cyber-card rounded-3xl p-8 md:p-12 border border-slate-800 relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <span class="text-xs font-bold uppercase tracking-widest text-cyan-400 font-cyber">Platform Vision & Mission</span>
+        <h1 class="text-3xl sm:text-5xl font-black text-white mt-2 mb-6 font-cyber">Empowering Scientific Minds via Interactive Mathematics & Physics</h1>
         
-        <p class="text-sm text-slate-300 leading-relaxed mb-6">
-            <strong>Academic Mind Arcade™</strong> combines digital learning systems with multi-tiered educational curricula. Directed and operated by <strong>{{ meta.owner_name }}</strong>, the platform serves learners across Primary (PLE), O-Level, and A-Level secondary tiers.
+        <p class="text-sm sm:text-base text-slate-300 leading-relaxed mb-6">
+            <strong>Academic Mind Arcade™</strong> transforms abstract mathematical logic and theoretical physical laws into tangible, interactive experiences. Designed and operated by <strong>{{ meta.owner_name }}</strong>, our learning arcade equips primary students and advanced candidates with computational tools, real-time particle mechanics simulations, and step-by-step theorem derivations.
         </p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-            <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-                <div class="text-cyan-400 font-bold text-sm mb-1">Founder & Lead Engineer</div>
-                <div class="text-white font-cyber text-lg">{{ meta.owner_name }}</div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-800/80">
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+                <div class="text-cyan-400 font-bold text-xs uppercase font-mono mb-1">Founder & Lead Engineer</div>
+                <div class="text-white font-cyber text-base font-bold">{{ meta.owner_name }}</div>
                 <div class="text-xs text-slate-500 font-mono mt-1">{{ meta.owner_email }}</div>
             </div>
-            <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-                <div class="text-indigo-400 font-bold text-sm mb-1">Platform Release</div>
-                <div class="text-white font-cyber text-lg">{{ meta.version }}</div>
-                <div class="text-xs text-slate-500 font-mono mt-1">Active Core Engine</div>
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+                <div class="text-indigo-400 font-bold text-xs uppercase font-mono mb-1">Core Engine Release</div>
+                <div class="text-white font-cyber text-base font-bold">{{ meta.version }}</div>
+                <div class="text-xs text-slate-500 font-mono mt-1">Real-time Canvas Physics Engine</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+                <div class="text-emerald-400 font-bold text-xs uppercase font-mono mb-1">Curriculum Scope</div>
+                <div class="text-white font-cyber text-base font-bold">PLE &bull; O-Level &bull; A-Level</div>
+                <div class="text-xs text-slate-500 font-mono mt-1">Mathematics & Physics Mastery</div>
             </div>
         </div>
     </div>
+
+    <!-- Educational Philosophy Pillars -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="cyber-card p-6 rounded-2xl border border-slate-800 space-y-3">
+            <div class="text-2xl text-cyan-400">1. Intuition Before Formulas</div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                By manipulating velocity vectors, angle sliders, and gravitational fields in real-time, students internalize the geometric and kinetic nature of physical laws before memorizing symbols.
+            </p>
+        </div>
+        <div class="cyber-card p-6 rounded-2xl border border-slate-800 space-y-3">
+            <div class="text-2xl text-indigo-400">2. Rigorous Analytical Proofs</div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                From quadratic discriminants to the Fundamental Theorem of Calculus, every formula in our Codex includes derivation context and dimensional units.
+            </p>
+        </div>
+        <div class="cyber-card p-6 rounded-2xl border border-slate-800 space-y-3">
+            <div class="text-2xl text-emerald-400">3. Continuous Diagnostics</div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Instant interactive quizzes highlight common misconceptions in mechanics, electrical resistance, and trigonometry, offering immediate mathematical explanations.
+            </p>
+        </div>
+    </div>
+
 </main>
 {% endblock %}

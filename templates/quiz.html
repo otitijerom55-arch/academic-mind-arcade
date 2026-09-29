@@ -1,0 +1,440 @@
+{% extends "layout.html" %}
+{% block title %}Interactive Math & Physics Quizzes | {{ meta.brand_name }}{% endblock %}
+
+{% block content %}
+<main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-10">
+
+    <!-- Header -->
+    <div class="border-b border-slate-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div>
+            <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400 font-cyber">Diagnostic Evaluation</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white mt-2 font-cyber">Math & Physics Interactive Quiz</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+                Test your conceptual and problem-solving mastery in Kinematics, Calculus, Electromagnetism, and Algebra. Receive immediate feedback with step-by-step mathematical reasoning.
+            </p>
+        </div>
+
+        <!-- Subject Filter Selection -->
+        <div class="flex gap-2">
+            <button onclick="loadQuizSet('all')" id="btn-quiz-all" class="quiz-sel-btn px-4 py-2 rounded-xl text-xs font-bold font-mono bg-amber-500 text-slate-950">
+                Mixed STEM (10 Qs)
+            </button>
+            <button onclick="loadQuizSet('physics')" id="btn-quiz-physics" class="quiz-sel-btn px-4 py-2 rounded-xl text-xs font-bold font-mono bg-slate-900 border border-slate-800 text-slate-300">
+                Physics Focus
+            </button>
+            <button onclick="loadQuizSet('math')" id="btn-quiz-math" class="quiz-sel-btn px-4 py-2 rounded-xl text-xs font-bold font-mono bg-slate-900 border border-slate-800 text-slate-300">
+                Math Focus
+            </button>
+        </div>
+    </div>
+
+    <!-- Active Quiz Container -->
+    <div id="quiz-container" class="space-y-6">
+        <!-- Questions injected via JavaScript -->
+    </div>
+
+    <!-- Submit Action & Score Card -->
+    <div class="cyber-glass rounded-3xl p-6 sm:p-8 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div>
+            <h3 class="text-xl font-bold text-white font-cyber">Complete Diagnostic Session</h3>
+            <p class="text-xs text-slate-400 mt-1" id="quiz-status-text">
+                Answer all questions above, then evaluate your performance score.
+            </p>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button onclick="gradeQuiz()" id="submit-quiz-btn" class="px-8 py-3.5 bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 text-slate-950 font-black uppercase tracking-wider text-xs rounded-xl hover:opacity-90 transition font-cyber shadow-lg shadow-amber-500/20">
+                Submit & Calculate Score ➔
+            </button>
+            <button onclick="resetQuiz()" class="px-5 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-bold uppercase rounded-xl border border-slate-700 transition">
+                Reset
+            </button>
+        </div>
+    </div>
+
+    <!-- Results Display Modal / Card (Hidden by default) -->
+    <div id="quiz-result-card" class="hidden cyber-card rounded-3xl p-8 border border-amber-500/40 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <h3 class="text-2xl font-bold text-white font-cyber">Diagnostic Score Report</h3>
+            <span id="score-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase font-mono bg-emerald-950 text-emerald-400 border border-emerald-800">
+                Passed
+            </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-center">
+                <span class="text-xs text-slate-400 block font-mono">Raw Score</span>
+                <span id="score-raw" class="text-3xl font-black text-amber-400 font-cyber">8 / 10</span>
+            </div>
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-center">
+                <span class="text-xs text-slate-400 block font-mono">Percentage</span>
+                <span id="score-percent" class="text-3xl font-black text-cyan-400 font-cyber">80.0%</span>
+            </div>
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-center">
+                <span class="text-xs text-slate-400 block font-mono">Diagnostic Rating</span>
+                <span id="score-rating" class="text-2xl font-bold text-white font-cyber">Distinction</span>
+            </div>
+        </div>
+
+        <p id="score-feedback" class="text-xs text-slate-300 leading-relaxed pt-2"></p>
+    </div>
+
+    <!-- User Quiz History (If authenticated) -->
+    {% if attempts %}
+    <div class="cyber-glass rounded-3xl p-6 border border-slate-800">
+        <h3 class="text-lg font-bold text-white font-cyber mb-4">Your Recent Diagnostic Attempts</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300 font-mono">
+                <thead>
+                    <tr class="border-b border-slate-800 text-slate-500">
+                        <th class="py-2">Subject Stream</th>
+                        <th class="py-2">Score</th>
+                        <th class="py-2">Percentage</th>
+                        <th class="py-2">Date Recorded</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60">
+                    {% for a in attempts %}
+                    <tr>
+                        <td class="py-2.5 font-bold text-white">{{ a.subject }}</td>
+                        <td class="py-2.5 text-cyan-400">{{ a.score }} / {{ a.total }}</td>
+                        <td class="py-2.5 text-emerald-400">{{ a.percentage }}%</td>
+                        <td class="py-2.5 text-slate-500">{{ a.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const QUIZ_DATABASE = [
+        {
+            id: 1,
+            subject: 'Physics',
+            topic: 'Kinematics',
+            level: 'O-Level',
+            question: 'A ball is launched vertically upward with an initial velocity of $20\\text{ m/s}$. Assuming $g = 10\\text{ m/s}^2$ and ignoring air resistance, what is the maximum height attained?',
+            options: [
+                '10 meters',
+                '20 meters',
+                '40 meters',
+                '200 meters'
+            ],
+            correct: 1,
+            explanation: 'Using the kinematic equation $v^2 = u^2 - 2gh$. At the peak apex, $v = 0$. Hence $0 = 20^2 - 2(10)h \\implies 20h = 400 \\implies h = 20\\text{ meters}$.'
+        },
+        {
+            id: 2,
+            subject: 'Math',
+            topic: 'Calculus',
+            level: 'A-Level',
+            question: 'What is the derivative $\\frac{d}{dx}[x^3 \\sin(x)]$ using the product rule?',
+            options: [
+                '$3x^2 \\cos(x)$',
+                '$3x^2 \\sin(x) + x^3 \\cos(x)$',
+                '$x^3 \\cos(x) - 3x^2 \\sin(x)$',
+                '$\\frac{3x^2}{\\cos(x)}$'
+            ],
+            correct: 1,
+            explanation: 'By the product rule $\\frac{d}{dx}[uv] = u\'v + uv\'$. Here $u = x^3 \\implies u\' = 3x^2$ and $v = \\sin(x) \\implies v\' = \\cos(x)$. Combining yields $3x^2\\sin(x) + x^3\\cos(x)$.'
+        },
+        {
+            id: 3,
+            subject: 'Physics',
+            topic: 'Mechanics',
+            level: 'O-Level',
+            question: 'According to Newton\'s Second Law, if a constant net force $F$ acts on an object of mass $m$, what happens to the acceleration if the mass is doubled while the force remains constant?',
+            options: [
+                'The acceleration doubles',
+                'The acceleration quadruples',
+                'The acceleration is halved',
+                'The acceleration remains unchanged'
+            ],
+            correct: 2,
+            explanation: 'From $F = ma$, we have $a = \\frac{F}{m}$. If mass becomes $2m$, the new acceleration is $a\' = \\frac{F}{2m} = \\frac{1}{2}a$.'
+        },
+        {
+            id: 4,
+            subject: 'Math',
+            topic: 'Algebra',
+            level: 'O-Level',
+            question: 'What are the solutions to the quadratic equation $x^2 - 7x + 12 = 0$?',
+            options: [
+                '$x = -3$ and $x = -4$',
+                '$x = 3$ and $x = 4$',
+                '$x = 2$ and $x = 6$',
+                '$x = 1$ and $x = 12$'
+            ],
+            correct: 1,
+            explanation: 'Factoring gives $(x - 3)(x - 4) = 0$. Therefore $x - 3 = 0 \\implies x = 3$, or $x - 4 = 0 \\implies x = 4$.'
+        },
+        {
+            id: 5,
+            subject: 'Physics',
+            topic: 'Electromagnetism',
+            level: 'O-Level',
+            question: 'A 12V direct current battery is connected across a resistor of $6\\,\\Omega$. What is the electrical power dissipated as heat in the resistor?',
+            options: [
+                '2 Watts',
+                '12 Watts',
+                '24 Watts',
+                '72 Watts'
+            ],
+            correct: 2,
+            explanation: 'Electric current $I = \\frac{V}{R} = \\frac{12}{6} = 2\\text{ A}$. Power $P = VI = 12 \\times 2 = 24\\text{ Watts}$ (or $P = \\frac{V^2}{R} = \\frac{144}{6} = 24\\text{ W}$).'
+        },
+        {
+            id: 6,
+            subject: 'Math',
+            topic: 'Calculus',
+            level: 'A-Level',
+            question: 'Evaluate the definite integral $\\int_{0}^{2} (3x^2 + 2x)\\,dx$:',
+            options: [
+                '10',
+                '12',
+                '14',
+                '16'
+            ],
+            correct: 1,
+            explanation: 'The antiderivative is $[x^3 + x^2]_{0}^{2} = (2^3 + 2^2) - (0 + 0) = (8 + 4) - 0 = 12$.'
+        },
+        {
+            id: 7,
+            subject: 'Physics',
+            topic: 'Optics',
+            level: 'A-Level',
+            question: 'Light travels from glass ($n_1 = 1.50$) into water ($n_2 = 1.33$). What is the critical angle $\\theta_c$ for total internal reflection?',
+            options: [
+                '$\\arcsin(1.33 / 1.50) \\approx 62.5^\\circ$',
+                '$\\arcsin(1.50 / 1.33)$ (Undefined)',
+                '$45.0^\\circ$',
+                '$90.0^\\circ$'
+            ],
+            correct: 0,
+            explanation: 'Snell\'s critical angle occurs when refracted angle is $90^\\circ$: $\\sin\\theta_c = \\frac{n_2}{n_1} = \\frac{1.33}{1.50} \\approx 0.8867 \\implies \\theta_c = \\arcsin(0.8867) \\approx 62.5^\\circ$.'
+        },
+        {
+            id: 8,
+            subject: 'Math',
+            topic: 'Trigonometry',
+            level: 'O-Level',
+            question: 'If $\\sin(\\theta) = \\frac{3}{5}$ for an acute angle $\\theta$, what is the exact value of $\\cos(\\theta)$?',
+            options: [
+                '$\\frac{2}{5}$',
+                '$\\frac{4}{5}$',
+                '$\\frac{5}{4}$',
+                '$\\frac{3}{4}$'
+            ],
+            correct: 1,
+            explanation: 'Using the fundamental Pythagorean trigonometric identity $\\cos^2(\\theta) = 1 - \\sin^2(\\theta) = 1 - \\frac{9}{25} = \\frac{16}{25} \\implies \\cos(\\theta) = \\frac{4}{5}$.'
+        },
+        {
+            id: 9,
+            subject: 'Physics',
+            topic: 'Harmonic Motion',
+            level: 'A-Level',
+            question: 'What happens to the period of a simple pendulum if its length is increased fourfold ($4L$)?',
+            options: [
+                'The period is quadrupled ($4T$)',
+                'The period is doubled ($2T$)',
+                'The period is halved ($T/2$)',
+                'The period remains identical'
+            ],
+            correct: 1,
+            explanation: 'The period of a simple pendulum is $T = 2\\pi\\sqrt{\\frac{L}{g}}$. Replacing $L$ with $4L$ yields $T\' = 2\\pi\\sqrt{\\frac{4L}{g}} = 2 \\times 2\\pi\\sqrt{\\frac{L}{g}} = 2T$.'
+        },
+        {
+            id: 10,
+            subject: 'Math',
+            topic: 'Vectors',
+            level: 'A-Level',
+            question: 'What is the dot product $\\vec{a} \\cdot \\vec{b}$ of vectors $\\vec{a} = 2\\hat{i} + 3\\hat{j} - \\hat{k}$ and $\\vec{b} = 4\\hat{i} - \\hat{j} + 5\\hat{k}$?',
+            options: [
+                '0 (Orthogonal)',
+                '5',
+                '10',
+                '-2'
+            ],
+            correct: 0,
+            explanation: 'The dot product is $(2)(4) + (3)(-1) + (-1)(5) = 8 - 3 - 5 = 0$. Since their dot product is zero, the vectors are perpendicular (orthogonal).'
+        }
+    ];
+
+    let currentFilter = 'all';
+    let currentQuestions = [];
+
+    function loadQuizSet(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.quiz-sel-btn').forEach(btn => {
+            btn.classList.remove('bg-amber-500', 'text-slate-950');
+            btn.classList.add('bg-slate-900', 'text-slate-300');
+        });
+
+        const activeBtn = document.getElementById('btn-quiz-' + filter);
+        if (activeBtn) {
+            activeBtn.classList.remove('bg-slate-900', 'text-slate-300');
+            activeBtn.classList.add('bg-amber-500', 'text-slate-950');
+        }
+
+        if (filter === 'physics') {
+            currentQuestions = QUIZ_DATABASE.filter(q => q.subject === 'Physics');
+        } else if (filter === 'math') {
+            currentQuestions = QUIZ_DATABASE.filter(q => q.subject === 'Math');
+        } else {
+            currentQuestions = [...QUIZ_DATABASE];
+        }
+
+        renderQuestions();
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+        document.getElementById('quiz-result-card').classList.add('hidden');
+
+        currentQuestions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'cyber-card rounded-2xl p-6 border border-slate-800 space-y-4';
+            card.id = `q-card-${index}`;
+
+            const badgeColor = q.subject === 'Math' ? 'text-cyan-400 bg-cyan-950/80 border-cyan-800' : 'text-indigo-400 bg-indigo-950/80 border-indigo-800';
+
+            let optsHtml = '';
+            q.options.forEach((opt, optIdx) => {
+                optsHtml += `
+                    <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-800/80 hover:bg-slate-900/60 cursor-pointer transition text-xs">
+                        <input type="radio" name="question-${index}" value="${optIdx}" class="accent-amber-400 w-4 h-4">
+                        <span class="text-slate-200">${opt}</span>
+                    </label>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center space-x-2">
+                        <span class="font-mono text-slate-500">Question ${index + 1} of ${currentQuestions.length}</span>
+                        <span class="text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded border ${badgeColor}">${q.subject} &bull; ${q.topic}</span>
+                    </div>
+                    <span class="text-[10px] text-slate-400 font-mono">${q.level}</span>
+                </div>
+                <div class="text-sm font-semibold text-white leading-relaxed pt-1">
+                    ${q.question}
+                </div>
+                <div class="space-y-2 pt-2">
+                    ${optsHtml}
+                </div>
+                <div id="q-feedback-${index}" class="hidden p-3 rounded-xl text-xs font-mono"></div>
+            `;
+            container.appendChild(card);
+        });
+
+        // Trigger KaTeX rendering on new elements
+        if (window.renderMathInElement) {
+            renderMathInElement(container, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+        }
+    }
+
+    function gradeQuiz() {
+        let score = 0;
+        let answeredCount = 0;
+
+        currentQuestions.forEach((q, index) => {
+            const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+            const feedbackBox = document.getElementById(`q-feedback-${index}`);
+            const card = document.getElementById(`q-card-${index}`);
+
+            feedbackBox.classList.remove('hidden');
+
+            if (selected) {
+                answeredCount++;
+                const answer = parseInt(selected.value);
+                if (answer === q.correct) {
+                    score++;
+                    card.className = 'cyber-card rounded-2xl p-6 border border-emerald-500/50 space-y-4';
+                    feedbackBox.className = 'p-3 rounded-xl text-xs font-mono bg-emerald-950/60 border border-emerald-800 text-emerald-300';
+                    feedbackBox.innerHTML = `<strong>✓ Correct!</strong> ${q.explanation}`;
+                } else {
+                    card.className = 'cyber-card rounded-2xl p-6 border border-rose-500/50 space-y-4';
+                    feedbackBox.className = 'p-3 rounded-xl text-xs font-mono bg-rose-950/60 border border-rose-800 text-rose-300';
+                    feedbackBox.innerHTML = `<strong>✗ Incorrect.</strong> Correct answer: <em>${q.options[q.correct]}</em>. <br>${q.explanation}`;
+                }
+            } else {
+                card.className = 'cyber-card rounded-2xl p-6 border border-amber-500/50 space-y-4';
+                feedbackBox.className = 'p-3 rounded-xl text-xs font-mono bg-amber-950/60 border border-amber-800 text-amber-300';
+                feedbackBox.innerHTML = `<strong>! Unanswered.</strong> Correct answer: <em>${q.options[q.correct]}</em>. <br>${q.explanation}`;
+            }
+
+            if (window.renderMathInElement) {
+                renderMathInElement(feedbackBox, {
+                    delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]
+                });
+            }
+        });
+
+        const total = currentQuestions.length;
+        const percentage = Math.round((score / total) * 100);
+
+        // Show result card
+        const resultCard = document.getElementById('quiz-result-card');
+        resultCard.classList.remove('hidden');
+        document.getElementById('score-raw').innerText = `${score} / ${total}`;
+        document.getElementById('score-percent').innerText = `${percentage}%`;
+
+        const badge = document.getElementById('score-badge');
+        const rating = document.getElementById('score-rating');
+        const feedback = document.getElementById('score-feedback');
+
+        if (percentage >= 80) {
+            badge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase font-mono bg-emerald-950 text-emerald-400 border border-emerald-800';
+            badge.innerText = 'Distinction';
+            rating.innerText = 'Mastery Achieved';
+            feedback.innerText = 'Outstanding performance! You possess an advanced intuitive grasp of mathematical derivatives, kinetic conservation, and circuit principles.';
+        } else if (percentage >= 50) {
+            badge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase font-mono bg-cyan-950 text-cyan-400 border border-cyan-800';
+            badge.innerText = 'Proficient';
+            rating.innerText = 'Solid Foundation';
+            feedback.innerText = 'Good work! Review the steps in the highlighted questions and explore the Virtual Labs to visualize edge cases.';
+        } else {
+            badge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase font-mono bg-rose-950 text-rose-400 border border-rose-800';
+            badge.innerText = 'Revision Advised';
+            rating.innerText = 'Needs Practice';
+            feedback.innerText = 'Consider reviewing the Formula Codex and trying the step-by-step calculators before retrying the quiz.';
+        }
+
+        // Post score to API
+        fetch('/api/record-quiz', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                subject: currentFilter === 'all' ? 'Mixed STEM' : (currentFilter === 'physics' ? 'Physics' : 'Mathematics'),
+                score: score,
+                total: total
+            })
+        }).catch(err => console.log('Quiz record saved locally'));
+
+        // Scroll to results
+        resultCard.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetQuiz() {
+        renderQuestions();
+    }
+
+    // Initialize
+    loadQuizSet('all');
+</script>
+{% endblock %}

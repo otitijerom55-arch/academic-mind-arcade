@@ -1,23 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{{ meta.brand_name }}{% endblock %}</title>
+    <title>{% block title %}{{ meta.brand_name }} | Math & Physics Portal{% endblock %}</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            50: '#f0fdfa',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            900: '#0f172a',
+                            950: '#030712'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for beautiful math & physics LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+        onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-cyber { font-family: 'Space Grotesk', sans-serif; }
+        .font-mono-code { font-family: 'Fira Code', monospace; }
+        
         .cyber-glass {
-            background: rgba(10, 15, 30, 0.85);
+            background: rgba(10, 15, 30, 0.82);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .cyber-card {
-            background: rgba(15, 23, 42, 0.75);
+            background: rgba(15, 23, 42, 0.78);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .cyber-card:hover {
+            border-color: rgba(6, 182, 212, 0.35);
         }
         .cyber-input {
             background: rgba(15, 23, 42, 0.9);
@@ -25,58 +61,116 @@
         }
         .cyber-input:focus {
             border-color: #06b6d4;
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.35);
             outline: none;
         }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
     </style>
+    {% block head %}{% endblock %}
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between relative selection:bg-cyan-500 selection:text-black">
 
-    <!-- Cyber Background Glow Effects -->
+    <!-- Atmospheric Glow Accents -->
     <div class="fixed -top-40 -left-40 w-96 h-96 bg-indigo-600/15 rounded-full blur-[140px] pointer-events-none"></div>
-    <div class="fixed top-1/2 -right-40 w-96 h-96 bg-cyan-500/15 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="fixed top-1/3 -right-40 w-96 h-96 bg-cyan-500/15 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="fixed bottom-0 left-1/3 w-96 h-96 bg-purple-600/10 rounded-full blur-[160px] pointer-events-none"></div>
 
     <!-- Header Navigation -->
-    <header class="sticky top-0 z-50 cyber-glass border-b border-slate-800/80 px-6 py-4">
+    <header class="sticky top-0 z-50 cyber-glass border-b border-slate-800/80 px-4 lg:px-8 py-3.5 transition-all">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="/" class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-teal-400 flex items-center justify-center font-black text-white text-xl font-cyber shadow-lg shadow-indigo-500/20">
-                    A
+            <!-- Brand / Logo -->
+            <a href="/" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-teal-400 flex items-center justify-center font-black text-white text-xl font-cyber shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition duration-200">
+                    ∑
                 </div>
                 <div>
-                    <span class="text-lg font-extrabold tracking-tight text-white block leading-none font-cyber">ACADEMIC MIND ARCADE</span>
-                    <span class="text-[10px] font-bold text-indigo-400 tracking-widest uppercase">Property of {{ meta.owner_name }}</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-lg font-extrabold tracking-tight text-white block leading-none font-cyber">ACADEMIC MIND ARCADE</span>
+                        <span class="text-[10px] font-bold bg-cyan-950/80 text-cyan-400 border border-cyan-800/80 px-1.5 py-0.5 rounded uppercase font-mono">Math & Physics</span>
+                    </div>
+                    <span class="text-[10px] font-semibold text-indigo-400 tracking-wider uppercase">Interactive STEM Portal &bull; {{ meta.owner_name }}</span>
                 </div>
             </a>
-            <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-wider">
-                <a href="/" class="text-slate-300 hover:text-cyan-400 transition">Dashboard</a>
-                <a href="/study-resources" class="text-slate-300 hover:text-cyan-400 transition">Resources Arcade</a>
-                <a href="/about" class="text-slate-300 hover:text-cyan-400 transition">Mission Briefing</a>
-                <a href="/intellectual-property" class="text-slate-300 hover:text-cyan-400 transition">IP Legal</a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden lg:flex items-center space-x-6 text-xs font-semibold uppercase tracking-wider">
+                <a href="/" class="text-slate-300 hover:text-cyan-400 transition py-1">Dashboard</a>
+                <a href="/simulations" class="text-slate-300 hover:text-cyan-400 transition py-1 flex items-center gap-1">
+                    <span class="text-cyan-400 text-sm">⚛</span> Virtual Labs
+                </a>
+                <a href="/calculators" class="text-slate-300 hover:text-cyan-400 transition py-1 flex items-center gap-1">
+                    <span class="text-indigo-400 text-sm">⚡</span> Calculators
+                </a>
+                <a href="/formulas" class="text-slate-300 hover:text-cyan-400 transition py-1 flex items-center gap-1">
+                    <span class="text-emerald-400 text-sm">∫</span> Formulas Codex
+                </a>
+                <a href="/quiz" class="text-slate-300 hover:text-cyan-400 transition py-1 flex items-center gap-1">
+                    <span class="text-amber-400 text-sm">🎯</span> Practice Quiz
+                </a>
+                <a href="/study-resources" class="text-slate-300 hover:text-cyan-400 transition py-1 flex items-center gap-1">
+                    <span class="text-pink-400 text-sm">📚</span> Resources
+                </a>
                 {% if is_admin %}
-                <a href="/admin-control" class="text-cyan-400 font-bold hover:text-cyan-300 transition border border-cyan-500/30 px-3 py-1.5 rounded-lg bg-cyan-950/50">Admin Hub</a>
+                <a href="/admin-control" class="text-cyan-400 font-bold hover:text-cyan-300 transition border border-cyan-500/30 px-3 py-1.5 rounded-lg bg-cyan-950/60">
+                    Admin Hub
+                </a>
                 {% endif %}
             </nav>
-            <div class="flex items-center space-x-4">
+
+            <!-- User Authentication Area -->
+            <div class="flex items-center space-x-3">
                 {% if user %}
-                <span class="text-xs text-slate-400 font-mono hidden sm:inline">{{ user }}</span>
-                <a href="/logout" class="text-xs font-bold text-rose-400 hover:text-rose-300 px-4 py-2 border border-rose-900/50 bg-rose-950/30 rounded-xl transition">Sign Out</a>
+                <div class="hidden sm:flex flex-col text-right">
+                    <span class="text-xs text-white font-medium">{{ user_obj.name if user_obj else 'Explorer' }}</span>
+                    <span class="text-[10px] text-slate-400 font-mono truncate max-w-[140px]">{{ user }}</span>
+                </div>
+                <a href="/logout" class="text-xs font-bold text-rose-400 hover:text-rose-300 px-3 py-1.5 border border-rose-900/50 bg-rose-950/30 rounded-xl transition">Sign Out</a>
                 {% else %}
-                <a href="/login" class="text-xs font-bold text-white hover:text-cyan-300 px-4 py-2 border border-slate-700 bg-slate-900 rounded-xl transition">Sign In</a>
-                <a href="/register" class="text-xs font-bold text-slate-950 bg-cyan-400 hover:bg-cyan-300 px-4 py-2 rounded-xl transition font-cyber">Register</a>
+                <a href="/login" class="text-xs font-bold text-white hover:text-cyan-300 px-3.5 py-1.5 border border-slate-700 bg-slate-900 rounded-xl transition">Sign In</a>
+                <a href="/register" class="text-xs font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-teal-300 hover:opacity-90 px-3.5 py-1.5 rounded-xl transition font-cyber shadow-sm">Get Started</a>
                 {% endif %}
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-toggle" class="lg:hidden p-2 text-slate-400 hover:text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
             </div>
         </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden mt-4 pt-4 border-t border-slate-800 space-y-2">
+            <a href="/" class="block px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-900">Dashboard</a>
+            <a href="/simulations" class="block px-3 py-2 rounded-lg text-sm text-cyan-400 hover:bg-slate-900">⚛ Virtual Labs & Simulations</a>
+            <a href="/calculators" class="block px-3 py-2 rounded-lg text-sm text-indigo-400 hover:bg-slate-900">⚡ STEM Calculators</a>
+            <a href="/formulas" class="block px-3 py-2 rounded-lg text-sm text-emerald-400 hover:bg-slate-900">∫ Formula Codex</a>
+            <a href="/quiz" class="block px-3 py-2 rounded-lg text-sm text-amber-400 hover:bg-slate-900">🎯 Practice Quizzes</a>
+            <a href="/study-resources" class="block px-3 py-2 rounded-lg text-sm text-pink-400 hover:bg-slate-900">📚 Curriculum Streams</a>
+            <a href="/about" class="block px-3 py-2 rounded-lg text-sm text-slate-400 hover:bg-slate-900">About & Mission</a>
+            {% if is_admin %}
+            <a href="/admin-control" class="block px-3 py-2 rounded-lg text-sm text-cyan-400 bg-cyan-950/40">Founder Admin Hub</a>
+            {% endif %}
+        </div>
     </header>
+
+    <script>
+        document.getElementById('mobile-toggle')?.addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
 
     <!-- Global Flash Notification Banner -->
     <div class="max-w-7xl mx-auto px-6 mt-4 w-full">
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
-              <div class="p-4 rounded-xl text-xs font-semibold border flex justify-between items-center {% if category == 'error' %}bg-rose-950/80 border-rose-800 text-rose-300{% elif category == 'success' %}bg-emerald-950/80 border-emerald-800 text-emerald-300{% else %}bg-indigo-950/80 border-indigo-800 text-indigo-300{% endif %}">
+              <div class="p-4 rounded-xl text-xs font-semibold border flex justify-between items-center mb-3 shadow-lg {% if category == 'error' %}bg-rose-950/80 border-rose-800 text-rose-300{% elif category == 'success' %}bg-emerald-950/80 border-emerald-800 text-emerald-300{% else %}bg-indigo-950/80 border-indigo-800 text-indigo-300{% endif %}">
                 <span>{{ message }}</span>
-                <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white">✕</button>
+                <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white font-bold ml-4 text-base">✕</button>
               </div>
             {% endfor %}
           {% endif %}
@@ -89,18 +183,66 @@
     </div>
 
     <!-- Institutional Footer -->
-    <footer class="cyber-glass border-t border-slate-800/80 py-8 px-6 text-center text-xs text-slate-500 mt-12">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <p class="font-semibold text-slate-400">&copy; {{ meta.copyright_year }} {{ meta.brand_name }}. Sole Proprietary Asset of {{ meta.owner_name }}.</p>
-                <p class="text-[10px] text-slate-600 mt-1 font-mono">{{ meta.version }} | Contact: {{ meta.owner_email }}</p>
+    <footer class="cyber-glass border-t border-slate-800/80 py-10 px-6 text-xs text-slate-400 mt-16">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div class="space-y-3 md:col-span-1">
+                <div class="flex items-center space-x-2">
+                    <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold font-cyber text-sm">∑</span>
+                    <span class="font-extrabold text-white font-cyber text-sm">ACADEMIC MIND ARCADE</span>
+                </div>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Interactive math, physics, mechanics, and calculus simulation engines designed to foster scientific discovery and problem-solving excellence.
+                </p>
+                <div class="text-[11px] font-mono text-cyan-400">
+                    {{ meta.subtitle }}
+                </div>
             </div>
-            <div class="flex space-x-6">
-                <a href="/intellectual-property" class="hover:text-cyan-400 transition">IP Legal Framework</a>
-                <a href="/about" class="hover:text-cyan-400 transition">About System</a>
+
+            <div>
+                <h4 class="font-bold uppercase tracking-wider text-white text-xs mb-3 font-cyber">Virtual Labs & Tools</h4>
+                <ul class="space-y-2 text-slate-400">
+                    <li><a href="/simulations?sim=projectile" class="hover:text-cyan-400 transition">Projectile Motion Lab</a></li>
+                    <li><a href="/simulations?sim=pendulum" class="hover:text-cyan-400 transition">Harmonic Pendulum Lab</a></li>
+                    <li><a href="/simulations?sim=calculus" class="hover:text-cyan-400 transition">Calculus Function Plotter</a></li>
+                    <li><a href="/simulations?sim=optics" class="hover:text-cyan-400 transition">Wave & Snell's Law Optics</a></li>
+                    <li><a href="/calculators" class="hover:text-cyan-400 transition">STEM Kinematics & Quad Solvers</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold uppercase tracking-wider text-white text-xs mb-3 font-cyber">Curriculum Levels</h4>
+                <ul class="space-y-2 text-slate-400">
+                    <li><a href="/study-resources?level=primary" class="hover:text-cyan-400 transition">Primary (PLE) Foundations</a></li>
+                    <li><a href="/study-resources?level=o-level" class="hover:text-cyan-400 transition">O-Level Physics & Algebra</a></li>
+                    <li><a href="/study-resources?level=a-level" class="hover:text-cyan-400 transition">A-Level Mechanics & Calculus</a></li>
+                    <li><a href="/formulas" class="hover:text-cyan-400 transition">Comprehensive Formula Codex</a></li>
+                    <li><a href="/quiz" class="hover:text-cyan-400 transition">Diagnostic Knowledge Quizzes</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold uppercase tracking-wider text-white text-xs mb-3 font-cyber">Platform Governance</h4>
+                <p class="text-slate-400 mb-2">Sole Proprietary Educational Asset of <strong>{{ meta.owner_name }}</strong>.</p>
+                <p class="font-mono text-slate-500 text-[11px] mb-3">{{ meta.version }}</p>
+                <div class="flex flex-col space-y-1.5">
+                    <a href="/intellectual-property" class="text-cyan-400 hover:underline">IP Legal Framework</a>
+                    <a href="/about" class="text-slate-300 hover:underline">Mission Briefing & Founder</a>
+                    <a href="mailto:{{ meta.owner_email }}" class="text-slate-400 hover:text-white">{{ meta.owner_email }}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto pt-6 border-t border-slate-800/80 flex flex-col md:flex-row justify-between items-center gap-3 text-slate-500 text-[11px]">
+            <div>
+                &copy; {{ meta.copyright_year }} {{ meta.brand_name }}. Engineered for Mathematics & Physics Education.
+            </div>
+            <div class="flex space-x-4">
+                <span class="text-emerald-400">&bull; Core Math & Physics Engine Online</span>
+                <span>All equations verified</span>
             </div>
         </div>
     </footer>
 
+    {% block scripts %}{% endblock %}
 </body>
 </html>

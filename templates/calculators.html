@@ -1,0 +1,326 @@
+{% extends "layout.html" %}
+{% block title %}STEM Computational Solvers | {{ meta.brand_name }}{% endblock %}
+
+{% block content %}
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-10">
+
+    <!-- Header -->
+    <div class="border-b border-slate-800 pb-6">
+        <div class="flex items-center space-x-2">
+            <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 font-cyber">Precision STEM Solvers</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-white mt-2 font-cyber">Interactive Math & Physics Calculators</h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+            Input numeric parameters to compute instant physical states, quadratic discriminant factors, electrical loads, and kinetic energy variables with step-by-step proofs.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        <!-- ========================================== -->
+        <!-- 1. KINEMATICS SUVAT SOLVER -->
+        <!-- ========================================== -->
+        <div class="cyber-card p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-[10px] font-bold uppercase font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-800">
+                        Physics: Kinematics
+                    </span>
+                    <h3 class="text-xl font-bold text-white font-cyber mt-2">SUVAT Motion Solver</h3>
+                </div>
+                <span class="text-2xl text-cyan-400">🏎</span>
+            </div>
+
+            <p class="text-xs text-slate-400">
+                Supply any 3 known motion variables to calculate final velocity $v$, displacement $s$, and acceleration $a$.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Initial Velocity $u$ (m/s)</label>
+                    <input type="number" id="suvat-u" value="0" step="any" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Acceleration $a$ (m/s²)</label>
+                    <input type="number" id="suvat-a" value="9.81" step="any" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Time Elapsed $t$ (s)</label>
+                    <input type="number" id="suvat-t" value="5" step="any" min="0" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+            </div>
+
+            <button onclick="solveSuvat()" class="w-full py-3 bg-gradient-to-r from-cyan-400 to-indigo-500 text-slate-950 font-black uppercase tracking-wider rounded-xl hover:opacity-90 transition font-cyber shadow-lg shadow-cyan-500/20 text-xs">
+                Calculate Kinematics ➔
+            </button>
+
+            <!-- SUVAT Output Box -->
+            <div id="suvat-result" class="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 space-y-3 font-mono text-xs">
+                <div class="text-cyan-400 font-bold uppercase">Computed Solution:</div>
+                <div class="grid grid-cols-2 gap-3 text-slate-300">
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+                        <span class="text-slate-500 text-[10px] block">Final Velocity ($v = u + at$):</span>
+                        <span id="suvat-res-v" class="text-white font-bold text-sm">49.05 m/s</span>
+                    </div>
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+                        <span class="text-slate-500 text-[10px] block">Total Distance ($s = ut + ½at²$):</span>
+                        <span id="suvat-res-s" class="text-white font-bold text-sm">122.63 m</span>
+                    </div>
+                </div>
+                <div class="text-[11px] text-slate-500 pt-1" id="suvat-steps">
+                    Step: $v = 0 + (9.81 \times 5) = 49.05 \text{ m/s}$ &bull; $s = 0 + 0.5 \times 9.81 \times 25 = 122.63 \text{ m}$
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 2. QUADRATIC & POLYNOMIAL SOLVER -->
+        <!-- ========================================== -->
+        <div class="cyber-card p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-[10px] font-bold uppercase font-mono text-teal-400 bg-teal-950/80 px-2.5 py-1 rounded border border-teal-800">
+                        Mathematics: Algebra
+                    </span>
+                    <h3 class="text-xl font-bold text-white font-cyber mt-2">Quadratic Equation Solver</h3>
+                </div>
+                <span class="text-2xl text-teal-400">📐</span>
+            </div>
+
+            <p class="text-xs text-slate-400">
+                Solves $ax^2 + bx + c = 0$ with discriminant $\Delta$ and complete step-by-step roots.
+            </p>
+
+            <div class="grid grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Coefficient $a$</label>
+                    <input type="number" id="quad-a" value="1" step="any" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Coefficient $b$</label>
+                    <input type="number" id="quad-b" value="-5" step="any" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Constant $c$</label>
+                    <input type="number" id="quad-c" value="6" step="any" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+            </div>
+
+            <button onclick="solveQuadratic()" class="w-full py-3 bg-gradient-to-r from-teal-400 to-emerald-400 text-slate-950 font-black uppercase tracking-wider rounded-xl hover:opacity-90 transition font-cyber shadow-lg shadow-teal-500/20 text-xs">
+                Find Roots & Discriminant ➔
+            </button>
+
+            <!-- Quadratic Output Box -->
+            <div id="quad-result" class="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 space-y-3 font-mono text-xs">
+                <div class="text-teal-400 font-bold uppercase">Roots Solution:</div>
+                <div class="grid grid-cols-2 gap-3 text-slate-300">
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+                        <span class="text-slate-500 text-[10px] block">Root $x_1$:</span>
+                        <span id="quad-res-x1" class="text-white font-bold text-sm">3.00</span>
+                    </div>
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+                        <span class="text-slate-500 text-[10px] block">Root $x_2$:</span>
+                        <span id="quad-res-x2" class="text-white font-bold text-sm">2.00</span>
+                    </div>
+                </div>
+                <div class="text-[11px] text-slate-400 pt-1" id="quad-details">
+                    Discriminant $\Delta = b^2 - 4ac = 25 - 24 = 1 > 0$ (Two distinct real roots). Vertex: $(2.50, -0.25)$.
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 3. WORK, ENERGY & FORCE CALCULATOR -->
+        <!-- ========================================== -->
+        <div class="cyber-card p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-[10px] font-bold uppercase font-mono text-indigo-400 bg-indigo-950/80 px-2.5 py-1 rounded border border-indigo-800">
+                        Physics: Dynamics & Energy
+                    </span>
+                    <h3 class="text-xl font-bold text-white font-cyber mt-2">Force, Momentum & Work-Energy</h3>
+                </div>
+                <span class="text-2xl text-indigo-400">⚙</span>
+            </div>
+
+            <p class="text-xs text-slate-400">
+                Calculates momentum ($p = mv$), kinetic energy ($E_k = \frac{1}{2}mv^2$), and gravitational potential energy ($E_p = mgh$).
+            </p>
+
+            <div class="grid grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Mass $m$ (kg)</label>
+                    <input type="number" id="energy-m" value="2.5" step="any" min="0" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Velocity $v$ (m/s)</label>
+                    <input type="number" id="energy-v" value="12" step="any" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Height $h$ (m)</label>
+                    <input type="number" id="energy-h" value="10" step="any" min="0" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+            </div>
+
+            <button onclick="solveEnergy()" class="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-black uppercase tracking-wider rounded-xl hover:opacity-90 transition font-cyber shadow-lg shadow-indigo-500/20 text-xs">
+                Compute Energy Spectrum ➔
+            </button>
+
+            <!-- Energy Output Box -->
+            <div id="energy-result" class="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 space-y-3 font-mono text-xs">
+                <div class="text-indigo-400 font-bold uppercase">Dynamic Breakdown:</div>
+                <div class="grid grid-cols-3 gap-2 text-slate-300">
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 text-center">
+                        <span class="text-slate-500 text-[10px] block">Momentum ($p$):</span>
+                        <span id="energy-res-p" class="text-white font-bold text-xs">30.00 kg·m/s</span>
+                    </div>
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 text-center">
+                        <span class="text-slate-500 text-[10px] block">Kinetic ($E_k$):</span>
+                        <span id="energy-res-ek" class="text-cyan-300 font-bold text-xs">180.00 J</span>
+                    </div>
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 text-center">
+                        <span class="text-slate-500 text-[10px] block">Potential ($E_p$):</span>
+                        <span id="energy-res-ep" class="text-emerald-300 font-bold text-xs">245.25 J</span>
+                    </div>
+                </div>
+                <div class="text-[11px] text-slate-400 pt-1" id="energy-total">
+                    Total Mechanical Energy: $E = E_k + E_p = 425.25 \text{ Joules}$
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 4. OHM'S LAW & ELECTRICAL CIRCUITS -->
+        <!-- ========================================== -->
+        <div class="cyber-card p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-[10px] font-bold uppercase font-mono text-amber-400 bg-amber-950/80 px-2.5 py-1 rounded border border-amber-800">
+                        Physics: Electromagnetism
+                    </span>
+                    <h3 class="text-xl font-bold text-white font-cyber mt-2">Ohm's Law & Circuit Analyzer</h3>
+                </div>
+                <span class="text-2xl text-amber-400">💡</span>
+            </div>
+
+            <p class="text-xs text-slate-400">
+                Determine current ($I$), electric resistance ($R$), potential difference ($V$), and power dissipation ($P$).
+            </p>
+
+            <div class="grid grid-cols-2 gap-4 text-xs">
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Voltage $V$ (Volts)</label>
+                    <input type="number" id="ohm-v" value="12" step="any" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Resistance $R$ (Ohms $\Omega$)</label>
+                    <input type="number" id="ohm-r" value="4" step="any" min="0.001" class="w-full cyber-input text-white rounded-xl px-3 py-2.5 font-mono">
+                </div>
+            </div>
+
+            <button onclick="solveOhm()" class="w-full py-3 bg-gradient-to-r from-amber-400 to-rose-400 text-slate-950 font-black uppercase tracking-wider rounded-xl hover:opacity-90 transition font-cyber shadow-lg shadow-amber-500/20 text-xs">
+                Compute Circuit Metrics ➔
+            </button>
+
+            <!-- Ohm Output Box -->
+            <div id="ohm-result" class="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 space-y-3 font-mono text-xs">
+                <div class="text-amber-400 font-bold uppercase">Electrical Telemetry:</div>
+                <div class="grid grid-cols-2 gap-3 text-slate-300">
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+                        <span class="text-slate-500 text-[10px] block">Current ($I = V/R$):</span>
+                        <span id="ohm-res-i" class="text-white font-bold text-sm">3.00 Amperes</span>
+                    </div>
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+                        <span class="text-slate-500 text-[10px] block">Power Dissipated ($P = VI$):</span>
+                        <span id="ohm-res-p" class="text-amber-300 font-bold text-sm">36.00 Watts</span>
+                    </div>
+                </div>
+                <div class="text-[11px] text-slate-400 pt-1">
+                    Joule Dissipation: $P = I^2 R = (3)^2 \times 4 = 36.00 \text{ W}$
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function solveSuvat() {
+        const u = parseFloat(document.getElementById('suvat-u').value) || 0;
+        const a = parseFloat(document.getElementById('suvat-a').value) || 0;
+        const t = parseFloat(document.getElementById('suvat-t').value) || 0;
+
+        const v = u + a * t;
+        const s = u * t + 0.5 * a * t * t;
+
+        document.getElementById('suvat-res-v').innerText = `${v.toFixed(2)} m/s`;
+        document.getElementById('suvat-res-s').innerText = `${s.toFixed(2)} m`;
+        document.getElementById('suvat-steps').innerText = `Step: v = ${u} + (${a} × ${t}) = ${v.toFixed(2)} m/s • s = (${u} × ${t}) + 0.5 × ${a} × ${Math.pow(t, 2)} = ${s.toFixed(2)} m`;
+    }
+
+    function solveQuadratic() {
+        const a = parseFloat(document.getElementById('quad-a').value);
+        const b = parseFloat(document.getElementById('quad-b').value);
+        const c = parseFloat(document.getElementById('quad-c').value);
+
+        if (a === 0) {
+            alert("Coefficient 'a' cannot be 0 for a quadratic equation.");
+            return;
+        }
+
+        const delta = b * b - 4 * a * c;
+        const vertexX = -b / (2 * a);
+        const vertexY = a * vertexX * vertexX + b * vertexX + c;
+
+        if (delta > 0) {
+            const x1 = (-b + Math.sqrt(delta)) / (2 * a);
+            const x2 = (-b - Math.sqrt(delta)) / (2 * a);
+            document.getElementById('quad-res-x1').innerText = x1.toFixed(3);
+            document.getElementById('quad-res-x2').innerText = x2.toFixed(3);
+            document.getElementById('quad-details').innerText = `Discriminant Δ = ${delta.toFixed(2)} > 0 (Two distinct real roots). Vertex: (${vertexX.toFixed(2)}, ${vertexY.toFixed(2)})`;
+        } else if (delta === 0) {
+            const x = -b / (2 * a);
+            document.getElementById('quad-res-x1').innerText = x.toFixed(3);
+            document.getElementById('quad-res-x2').innerText = `${x.toFixed(3)} (Repeated)`;
+            document.getElementById('quad-details').innerText = `Discriminant Δ = 0 (One single repeated root). Tangent to x-axis at vertex (${vertexX.toFixed(2)}, 0.00)`;
+        } else {
+            const real = (-b / (2 * a)).toFixed(3);
+            const imag = (Math.sqrt(-delta) / (2 * a)).toFixed(3);
+            document.getElementById('quad-res-x1').innerText = `${real} + ${imag}i`;
+            document.getElementById('quad-res-x2').innerText = `${real} - ${imag}i`;
+            document.getElementById('quad-details').innerText = `Discriminant Δ = ${delta.toFixed(2)} < 0 (Complex conjugate roots, no real x-intercepts). Vertex: (${vertexX.toFixed(2)}, ${vertexY.toFixed(2)})`;
+        }
+    }
+
+    function solveEnergy() {
+        const m = parseFloat(document.getElementById('energy-m').value) || 0;
+        const v = parseFloat(document.getElementById('energy-v').value) || 0;
+        const h = parseFloat(document.getElementById('energy-h').value) || 0;
+        const g = 9.81;
+
+        const p = m * v;
+        const ek = 0.5 * m * v * v;
+        const ep = m * g * h;
+        const total = ek + ep;
+
+        document.getElementById('energy-res-p').innerText = `${p.toFixed(2)} kg·m/s`;
+        document.getElementById('energy-res-ek').innerText = `${ek.toFixed(2)} J`;
+        document.getElementById('energy-res-ep').innerText = `${ep.toFixed(2)} J`;
+        document.getElementById('energy-total').innerText = `Total Mechanical Energy: E = ${ek.toFixed(2)} + ${ep.toFixed(2)} = ${total.toFixed(2)} Joules`;
+    }
+
+    function solveOhm() {
+        const v = parseFloat(document.getElementById('ohm-v').value) || 0;
+        const r = parseFloat(document.getElementById('ohm-r').value) || 1;
+
+        const i = v / r;
+        const p = v * i;
+
+        document.getElementById('ohm-res-i').innerText = `${i.toFixed(2)} Amperes`;
+        document.getElementById('ohm-res-p').innerText = `${p.toFixed(2)} Watts`;
+    }
+</script>
+{% endblock %}
