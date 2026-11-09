@@ -1,40 +1,57 @@
 {% extends "layout.html" %}
-{% block title %}Create Student Account | {{ meta.brand_name }}{% endblock %}
+{% block title %}{{ t.reg_title }} | {{ meta.brand_name }}{% endblock %}
 
 {% block content %}
-<main class="max-w-md mx-auto px-4 sm:px-6 py-14">
+<main class="max-w-md mx-auto px-4 sm:px-6 py-12">
     <div class="cyber-card rounded-3xl p-8 border border-slate-800 shadow-2xl relative z-10 space-y-6">
+        
+        <!-- Language Switcher Bar on Register -->
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800/80 text-xs">
+            <span class="text-slate-400 font-mono text-[11px]">🌐 Lugha / Language:</span>
+            <div class="flex items-center space-x-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+                <a href="/set-language/en?next={{ request.path }}" class="px-2.5 py-1 rounded-lg font-bold text-xs transition {% if current_lang == 'en' %}bg-cyan-500 text-slate-950 shadow-sm{% else %}text-slate-400 hover:text-white{% endif %}">
+                    English
+                </a>
+                <a href="/set-language/sw?next={{ request.path }}" class="px-2.5 py-1 rounded-lg font-bold text-xs transition {% if current_lang == 'sw' %}bg-cyan-500 text-slate-950 shadow-sm{% else %}text-slate-400 hover:text-white{% endif %}">
+                    Kiswahili
+                </a>
+            </div>
+        </div>
+
         <div class="text-center space-y-2">
             <div class="w-12 h-12 rounded-2xl bg-indigo-950/80 border border-indigo-800/80 text-indigo-400 mx-auto flex items-center justify-center font-bold text-xl font-cyber shadow-lg shadow-indigo-500/20">
                 ⚛
             </div>
-            <h1 class="text-2xl font-black text-white tracking-wider font-cyber">STUDENT REGISTRATION</h1>
-            <p class="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Join Math & Physics Learning Hub</p>
+            <div class="text-[11px] font-extrabold text-cyan-400 uppercase tracking-widest font-mono">
+                {{ meta.trademark }}
+            </div>
+            <h1 class="text-2xl font-black text-white tracking-wider font-cyber">{{ t.reg_title }}</h1>
+            <p class="text-xs font-semibold text-cyan-400 tracking-wide">{{ t.reg_subtitle }}</p>
         </div>
 
         <form action="/register" method="POST" class="space-y-4 text-xs">
             <div>
-                <label class="block font-bold uppercase tracking-wider text-slate-400 mb-1.5">Full Name</label>
-                <input type="text" name="name" required placeholder="Isaac Newton" class="w-full cyber-input text-white rounded-xl px-4 py-3">
+                <label class="block font-bold uppercase tracking-wider text-slate-400 mb-1.5">{{ t.name_label }}</label>
+                <input type="text" name="name" required placeholder="{{ t.name_placeholder }}" class="w-full cyber-input text-white rounded-xl px-4 py-3">
             </div>
 
             <div>
-                <label class="block font-bold uppercase tracking-wider text-slate-400 mb-1.5">Email Address</label>
-                <input type="email" name="email" required placeholder="scholar@stem.edu" class="w-full cyber-input text-white rounded-xl px-4 py-3 font-mono">
+                <label class="block font-bold uppercase tracking-wider text-slate-400 mb-1.5">{{ t.email_label }}</label>
+                <input type="email" name="email" required placeholder="{{ t.email_placeholder }}" class="w-full cyber-input text-white rounded-xl px-4 py-3 font-mono">
             </div>
 
             <div>
-                <label class="block font-bold uppercase tracking-wider text-slate-400 mb-1.5">Password Access Key</label>
-                <input type="password" name="password" required placeholder="••••••••••••••••" class="w-full cyber-input text-white rounded-xl px-4 py-3">
+                <label class="block font-bold uppercase tracking-wider text-slate-400 mb-1.5">{{ t.password_label }}</label>
+                <input type="password" name="password" required placeholder="{{ t.password_placeholder }}" class="w-full cyber-input text-white rounded-xl px-4 py-3">
             </div>
 
             <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 text-slate-950 font-black tracking-wider uppercase rounded-xl hover:opacity-90 transition font-cyber shadow-lg shadow-cyan-500/20 text-xs">
-                Unlock Learning Arcades ➔
+                {{ t.reg_button }}
             </button>
         </form>
 
         <div class="pt-4 border-t border-slate-800/80 text-center flex justify-between items-center text-xs text-slate-400">
-            <a href="/login" class="hover:text-cyan-400 transition">Already registered? Sign In</a>
+            <a href="/login" class="hover:text-cyan-400 transition">{{ t.already_registered }}</a>
             <a href="/intellectual-property" class="hover:text-indigo-400 transition">IP Legal Framework</a>
         </div>
     </div>

@@ -1,36 +1,53 @@
 {% extends "layout.html" %}
-{% block title %}Student & Staff Sign In | {{ meta.brand_name }}{% endblock %}
+{% block title %}{{ t.portal_title }} | {{ meta.brand_name }}{% endblock %}
 
 {% block content %}
-<main class="max-w-md mx-auto px-4 sm:px-6 py-14">
+<main class="max-w-md mx-auto px-4 sm:px-6 py-12">
     <div class="cyber-card rounded-3xl p-8 border border-slate-800 shadow-2xl relative z-10 space-y-6">
+        
+        <!-- Language Switcher Bar on Login -->
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800/80 text-xs">
+            <span class="text-slate-400 font-mono text-[11px]">🌐 Lugha / Language:</span>
+            <div class="flex items-center space-x-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+                <a href="/set-language/en?next={{ request.path }}" class="px-2.5 py-1 rounded-lg font-bold text-xs transition {% if current_lang == 'en' %}bg-cyan-500 text-slate-950 shadow-sm{% else %}text-slate-400 hover:text-white{% endif %}">
+                    English
+                </a>
+                <a href="/set-language/sw?next={{ request.path }}" class="px-2.5 py-1 rounded-lg font-bold text-xs transition {% if current_lang == 'sw' %}bg-cyan-500 text-slate-950 shadow-sm{% else %}text-slate-400 hover:text-white{% endif %}">
+                    Kiswahili
+                </a>
+            </div>
+        </div>
+
         <div class="text-center space-y-2">
             <div class="w-12 h-12 rounded-2xl bg-cyan-950/80 border border-cyan-800/80 text-cyan-400 mx-auto flex items-center justify-center font-bold text-xl font-cyber shadow-lg shadow-cyan-500/20">
                 ∑
             </div>
-            <h1 class="text-2xl font-black text-white tracking-wider font-cyber">STUDENT PORTAL</h1>
-            <p class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Academic Mind Arcade™ Gateway</p>
+            <div class="text-[11px] font-extrabold text-cyan-400 uppercase tracking-widest font-mono">
+                {{ meta.trademark }}
+            </div>
+            <h1 class="text-2xl font-black text-white tracking-wider font-cyber">{{ t.portal_title }}</h1>
+            <p class="text-xs font-semibold text-indigo-400 tracking-wide">{{ t.portal_subtitle }}</p>
         </div>
 
         <form action="/login" method="POST" class="space-y-4 text-xs">
             <div>
-                <label class="block font-bold uppercase tracking-wider text-slate-400 mb-1.5">User / Admin Email</label>
-                <input type="email" name="email" required placeholder="student@example.com" class="w-full cyber-input text-white rounded-xl px-4 py-3 font-mono">
+                <label class="block font-bold uppercase tracking-wider text-slate-400 mb-1.5">{{ t.email_label }}</label>
+                <input type="email" name="email" required placeholder="{{ t.email_placeholder }}" class="w-full cyber-input text-white rounded-xl px-4 py-3 font-mono">
             </div>
 
             <div>
-                <label class="block font-bold uppercase tracking-wider text-slate-400 mb-1.5">Password Access Key</label>
-                <input type="password" name="password" required placeholder="••••••••••••••••" class="w-full cyber-input text-white rounded-xl px-4 py-3">
+                <label class="block font-bold uppercase tracking-wider text-slate-400 mb-1.5">{{ t.password_label }}</label>
+                <input type="password" name="password" required placeholder="{{ t.password_placeholder }}" class="w-full cyber-input text-white rounded-xl px-4 py-3">
             </div>
 
             <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-indigo-500 via-cyan-500 to-teal-400 text-slate-950 font-black tracking-wider uppercase rounded-xl hover:opacity-90 transition font-cyber shadow-lg shadow-cyan-500/20 text-xs">
-                Authorize Session ➔
+                {{ t.login_button }}
             </button>
         </form>
 
         <div class="pt-4 border-t border-slate-800/80 text-center flex justify-between items-center text-xs text-slate-400">
-            <a href="/register" class="hover:text-cyan-400 transition">Create Student Account</a>
-            <a href="/about" class="hover:text-indigo-400 transition">About System</a>
+            <a href="/register" class="hover:text-cyan-400 transition">{{ t.create_account }}</a>
+            <a href="/about" class="hover:text-indigo-400 transition">{{ t.about_system }}</a>
         </div>
     </div>
 </main>
