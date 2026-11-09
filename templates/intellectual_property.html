@@ -1,21 +1,34 @@
 {% extends "layout.html" %}
-{% block title %}Intellectual Property Notice | {{ meta.brand_name }}{% endblock %}
+{% block title %}Intellectual Property & Trademark | {{ meta.trademark }}{% endblock %}
 
 {% block content %}
-<main class="max-w-4xl mx-auto px-6 py-12">
-    <div class="cyber-card rounded-3xl p-8 md:p-12 border border-slate-800">
-        <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 font-cyber">Legal Compliance</span>
-        <h1 class="text-3xl font-black text-white mt-2 mb-6 font-cyber">Intellectual Property Framework</h1>
+<main class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <div class="cyber-card rounded-3xl p-8 md:p-12 border border-slate-800 space-y-6">
+        <div class="flex items-center space-x-2">
+            <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 font-cyber">Legal Compliance & Trademark</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 border border-indigo-800 text-indigo-300 font-bold">{{ meta.trademark }}</span>
+        </div>
+        
+        <h1 class="text-3xl font-black text-white font-cyber">{{ meta.trademark }} Intellectual Property Framework</h1>
         
         <div class="space-y-6 text-xs text-slate-300 leading-relaxed font-mono">
+            <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2">
+                <span class="text-cyan-400 font-bold block text-sm font-cyber">Registered Trademark Notice: {{ meta.trademark }}</span>
+                <p>
+                    <strong>{{ meta.trademark }}</strong> and <strong>{{ meta.brand_name }}</strong> are the exclusive protected trademarks and proprietary assets of <strong>{{ meta.owner_name }}</strong> ({{ meta.owner_email }}). All branding, logos, design marks, domain representations, and software modules bearing the <strong>{{ meta.trademark }}</strong> mark are globally protected under international intellectual property treaties.
+                </p>
+            </div>
+
             <p>
-                <strong>Sole Ownership Declaration:</strong> All technology, trade secrets, curriculum integrations, and digital branding associated with <strong>{{ meta.brand_name }}</strong> are the exclusive property of <strong>{{ meta.owner_name }}</strong> ({{ meta.owner_email }}).
+                <strong>Proprietary Curriculum & Simulation Engines:</strong> All physics simulation engines, interactive calculus tools, KaTeX mathematical derivations, and video streams provided on this portal are proprietary learning assets developed for the advancement of STEM education.
             </p>
+
             <p>
-                <strong>Protected Curriculum & Media:</strong> All video stream links, document assets, and user interface designs are protected under international copyright laws (2026). Unauthorized distribution or reproduction of system assets is prohibited.
+                <strong>Bilingual System Integration:</strong> The localized bilingual presentation (English and Kiswahili) and related software infrastructure are proprietary works under {{ meta.copyright_year }} copyright laws.
             </p>
+
             <p>
-                <strong>System Integrity:</strong> Administrative functions are restricted to authorized credentials monitored by <strong>{{ meta.owner_name }}</strong>.
+                <strong>Administrative Clearance:</strong> Administrative functions, module deployment protocols, and user tracking are restricted to authorized credentials monitored by <strong>{{ meta.owner_name }}</strong> under the <strong>{{ meta.trademark }}</strong> organization.
             </p>
         </div>
     </div>
